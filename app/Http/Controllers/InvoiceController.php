@@ -94,6 +94,8 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice): View
     {
+        $invoice->load('patient');
+
         return view('invoices.show', compact('invoice'));
     }
 
@@ -102,6 +104,8 @@ class InvoiceController extends Controller
         $clinic = tenant();
 
         abort_unless($this->planService->isFeatureAllowed($clinic, 'pdf'), 403, 'PDF export is not available on your current plan.');
+
+        $invoice->load('patient');
 
         $pdf = Pdf::loadView('pdf.invoice', [
             'invoice' => $invoice,

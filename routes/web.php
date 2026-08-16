@@ -13,17 +13,16 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TreatmentPlanController;
 use App\Http\Controllers\TreatmentSessionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Public
+Route::get('/', [PublicController::class, 'home'])->name('home');
+Route::get('/pricing', [PublicController::class, 'pricing'])->name('pricing');
 Route::get('/request-access', [AccessRequestController::class, 'create'])->name('request-access');
 Route::post('/request-access', [AccessRequestController::class, 'store'])->name('request-access.store');
 

@@ -13,7 +13,7 @@
                 <div class="flex items-start justify-between mb-4">
                     <div>
                         <h3 class="font-semibold text-lg text-gray-900 dark:text-white" x-text="detailPlan.patient_name"></h3>
-                        <p class="text-sm" style="color:#1649FF;" x-text="detailPlan.treatment"></p>
+                        <p class="text-sm" style="color:#465fff;" x-text="detailPlan.treatment"></p>
                     </div>
                     <button type="button" @click="detailModal = false" class="text-gray-400 hover:text-gray-600">
                         <i class="fa-solid fa-xmark text-lg"></i>

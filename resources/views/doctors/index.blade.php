@@ -7,7 +7,7 @@
                     {{ $doctorsUsed }} / {{ $doctorsLimit === -1 ? 'Unlimited' : $doctorsLimit }} on your plan
                 </p>
             </div>
-            <button @click="modalOpen = true; editingId = null; form = { name: '', email: '', role: 'doctor', specialty: '', color: '#1649FF' }"
+            <button @click="modalOpen = true; editingId = null; form = { name: '', email: '', role: 'doctor', specialty: '', color: '#465fff' }"
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">
                 <i class="fa-solid fa-plus"></i> Add Doctor
             </button>
@@ -18,7 +18,7 @@
          x-data="{
             modalOpen: false,
             editingId: null,
-            form: { name: '', email: '', role: 'doctor', specialty: '', color: '#1649FF' },
+            form: { name: '', email: '', role: 'doctor', specialty: '', color: '#465fff' },
             edit(doctor) {
                 this.editingId = doctor.id;
                 this.form = { name: doctor.name, email: doctor.email, role: doctor.role, specialty: doctor.specialty ?? '', color: doctor.color };

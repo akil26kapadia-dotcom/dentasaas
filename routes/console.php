@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('dentasaas:check-plan-expiry')->daily();
+Schedule::command('dentasaas:send-appointment-reminders')->daily();

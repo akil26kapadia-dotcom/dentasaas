@@ -1,7 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 [x-cloak] {
     display: none !important;
+}
+
+/* Prevent iOS Safari from auto-zooming when a form field is focused. */
+@media (max-width: 640px) {
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* DataTables can overflow narrow viewports; keep the scrollbar inside the table's own box. */
+.dataTables_wrapper {
+    overflow-x: auto;
+}
+
+/*
+ * TailAdmin (https://tailadmin.com) sidebar menu-item component classes,
+ * ported from their Tailwind v4 template to this project's Tailwind v3 setup.
+ */
+@layer components {
+    .menu-item {
+        @apply relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium;
+    }
+
+    .menu-item-active {
+        @apply bg-indigo-50 text-indigo-500;
+    }
+
+    .menu-item-inactive {
+        @apply text-gray-700 hover:bg-gray-100 hover:text-gray-700;
+    }
+
+    .menu-item-icon-active {
+        @apply text-indigo-500;
+    }
+
+    .menu-item-icon-inactive {
+        @apply text-gray-500 group-hover:text-gray-700;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        border-radius: 9999px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        border-radius: 9999px;
+        background-color: theme('colors.gray.200');
+    }
 }

@@ -1,5 +1,5 @@
 @php
-    $swatches = ['#1649FF', '#DC2626', '#059669', '#D97706', '#7C3AED', '#0891B2', '#DB2777', '#4B5563'];
+    $swatches = ['#465fff', '#DC2626', '#059669', '#D97706', '#7C3AED', '#0891B2', '#DB2777', '#4B5563'];
 @endphp
 
 <div x-show="modalOpen" x-cloak

@@ -23,7 +23,7 @@
 
         <a href="{{ Route::has('settings.billing') ? route('settings.billing') : '#' }}"
            class="block text-center mt-2 text-xs font-medium bg-indigo-600 text-white rounded-lg py-1.5 hover:bg-indigo-700">
-            Upgrade Plan
+            {{ __('Upgrade Plan') }}
         </a>
     </div>
 @endif

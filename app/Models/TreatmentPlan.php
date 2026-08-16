@@ -42,7 +42,7 @@ class TreatmentPlan extends Model
     protected function completedCount(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->sessions()->where('status', 'completed')->count(),
+            get: fn () => $this->sessions->where('status', 'completed')->count(),
         );
     }
 

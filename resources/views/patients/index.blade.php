@@ -71,7 +71,7 @@
                         </thead>
                         <tbody>
                             @php
-                                $palette = ['#1649FF', '#059669', '#d97706', '#dc2626', '#7c3aed', '#0891b2'];
+                                $palette = ['#465fff', '#059669', '#d97706', '#dc2626', '#7c3aed', '#0891b2'];
                             @endphp
                             @foreach ($patients as $patient)
                                 <tr class="border-t border-gray-100 dark:border-gray-700">

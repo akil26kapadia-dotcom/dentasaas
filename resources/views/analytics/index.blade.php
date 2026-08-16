@@ -70,7 +70,7 @@
                                         <span class="text-gray-500 dark:text-gray-400">{{ $service['count'] }} sold &bull; ₹{{ number_format($service['revenue'], 2) }}</span>
                                     </div>
                                     <div class="w-full h-1.5 rounded-full bg-gray-200 dark:bg-gray-700">
-                                        <div class="h-1.5 rounded-full" style="width: {{ ($service['revenue'] / $maxRevenue) * 100 }}%; background-color:#1649FF;"></div>
+                                        <div class="h-1.5 rounded-full" style="width: {{ ($service['revenue'] / $maxRevenue) * 100 }}%; background-color:#465fff;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                         datasets: [{
                             label: 'Revenue',
                             data: @json($monthlyRevenue['data']),
-                            backgroundColor: '#1649FF',
+                            backgroundColor: '#465fff',
                             borderRadius: 4,
                         }],
                     },
@@ -109,7 +109,7 @@
                             datasets: [{
                                 label: 'Appointments',
                                 data: @json($appointmentTrend['data']),
-                                borderColor: '#1649FF',
+                                borderColor: '#465fff',
                                 backgroundColor: 'rgba(22, 73, 255, 0.1)',
                                 tension: 0.3,
                                 fill: true,

@@ -60,7 +60,7 @@
                                  @dragstart="draggingId = {{ $plan->id }}"
                                  @dragend="draggingId = null">
                                 <p class="font-semibold text-sm text-gray-900 dark:text-white">{{ $plan->patient_name }}</p>
-                                <p class="text-xs mt-0.5" style="color:#1649FF;">{{ $plan->treatment }}</p>
+                                <p class="text-xs mt-0.5" style="color:#465fff;">{{ $plan->treatment }}</p>
 
                                 <div class="mt-3">
                                     <div class="flex justify-between text-[10px] text-gray-500 dark:text-gray-400 mb-1">

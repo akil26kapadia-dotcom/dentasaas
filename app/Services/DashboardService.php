@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Clinic;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardService
 {
@@ -11,16 +12,18 @@ class DashboardService
 
     public function getStats(Clinic $clinic): array
     {
-        return [
-            'total_patients' => $clinic->patients()->count(),
-            'today_appointments' => $clinic->appointments()->whereDate('appt_date', today())->count(),
-            'monthly_revenue' => $clinic->invoices()
-                ->where('status', 'paid')
-                ->whereMonth('invoice_date', now()->month)
-                ->whereYear('invoice_date', now()->year)
-                ->sum('grand_total'),
-            'pending_count' => $clinic->appointments()->where('status', 'pending')->count(),
-        ];
+        return Cache::remember("dashboard.{$clinic->id}.stats", 600, function () use ($clinic) {
+            return [
+                'total_patients' => $clinic->patients()->count(),
+                'today_appointments' => $clinic->appointments()->whereDate('appt_date', today())->count(),
+                'monthly_revenue' => $clinic->invoices()
+                    ->where('status', 'paid')
+                    ->whereMonth('invoice_date', now()->month)
+                    ->whereYear('invoice_date', now()->year)
+                    ->sum('grand_total'),
+                'pending_count' => $clinic->appointments()->where('status', 'pending')->count(),
+            ];
+        });
     }
 
     public function getTodayAppointments(Clinic $clinic): Collection
@@ -55,23 +58,25 @@ class DashboardService
 
     public function getPlanUsage(Clinic $clinic): array
     {
-        $limits = $clinic->getPlanLimits();
-        $usage = $this->planService->getUsage($clinic);
+        return Cache::remember("dashboard.{$clinic->id}.plan_usage", 600, function () use ($clinic) {
+            $limits = $clinic->getPlanLimits();
+            $usage = $this->planService->getUsage($clinic);
 
-        $result = [];
+            $result = [];
 
-        foreach ($usage as $resource => $used) {
-            $limit = $limits[$resource] ?? 0;
-            $pct = ($limit === -1 || $limit === 0) ? 0 : (int) round(($used / $limit) * 100);
+            foreach ($usage as $resource => $used) {
+                $limit = $limits[$resource] ?? 0;
+                $pct = ($limit === -1 || $limit === 0) ? 0 : (int) round(($used / $limit) * 100);
 
-            $result[$resource] = [
-                'used' => $used,
-                'limit' => $limit,
-                'pct' => $limit === -1 ? 0 : min($pct, 100),
-            ];
-        }
+                $result[$resource] = [
+                    'used' => $used,
+                    'limit' => $limit,
+                    'pct' => $limit === -1 ? 0 : min($pct, 100),
+                ];
+            }
 
-        return $result;
+            return $result;
+        });
     }
 
     public function getStatTrends(Clinic $clinic): array

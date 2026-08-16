@@ -23,7 +23,7 @@
                     </p>
                     <a href="{{ route('dashboard') }}"
                        class="inline-flex items-center justify-center gap-2 mt-6 px-5 py-2.5 rounded-lg font-medium text-white"
-                       style="background-color:#1649FF;">
+                       style="background-color:#465fff;">
                         <i class="fa-solid fa-rotate-right"></i> Try Again
                     </a>
                 </div>

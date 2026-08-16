@@ -61,7 +61,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-lg font-medium text-white transition" style="background-color:#1649FF;">
+                    <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-lg font-medium text-white transition" style="background-color:#465fff;">
                         {{ __('Log in') }}
                     </button>
                 </form>

@@ -26,18 +26,20 @@
             @endphp
 
             @foreach ($cards as $card)
-                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-5">
-                    <div class="flex items-center justify-between">
-                        <span class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-gray-700 text-indigo-600 flex items-center justify-center">
-                            <i class="fa-solid {{ $card['icon'] }}"></i>
-                        </span>
-                        <span class="text-xs font-medium {{ $card['trend'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                            <i class="fa-solid {{ $card['trend'] >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }}"></i>
+                <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
+                    <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-800">
+                        <i class="fa-solid {{ $card['icon'] }}"></i>
+                    </span>
+                    <div class="mt-5 flex items-end justify-between">
+                        <div>
+                            <span class="text-sm text-gray-500">{{ $card['label'] }}</span>
+                            <h4 class="mt-2 text-title-sm font-bold text-gray-800">{{ $card['value'] }}</h4>
+                        </div>
+                        <span class="flex items-center gap-1 rounded-full py-0.5 pl-2 pr-2.5 text-sm font-medium {{ $card['trend'] >= 0 ? 'bg-success-50 text-success-600' : 'bg-error-50 text-error-600' }}">
+                            <i class="fa-solid {{ $card['trend'] >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} text-xs"></i>
                             {{ number_format(abs($card['trend']), 1) }}%
                         </span>
                     </div>
-                    <p class="text-2xl font-semibold text-gray-900 dark:text-white mt-3">{{ $card['value'] }}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $card['label'] }}</p>
                 </div>
             @endforeach
         </div>
@@ -71,7 +73,7 @@
 
         <!-- Two columns -->
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            <div class="lg:col-span-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-5">
+            <div class="lg:col-span-3 rounded-2xl border border-gray-200 bg-white p-5">
                 <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Today's Schedule</h3>
                 <div class="overflow-x-auto">
                     <table id="today-schedule-table" class="w-full text-sm">
@@ -113,14 +115,14 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-5">
+            <div class="lg:col-span-2 rounded-2xl border border-gray-200 bg-white p-5">
                 <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Revenue (Last 6 Months)</h3>
                 <canvas id="revenue-chart" height="220"></canvas>
             </div>
         </div>
 
         <!-- Recent activity -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-5">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5">
             <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
             <ul class="space-y-3">
                 @forelse ($recentActivity as $item)
@@ -176,7 +178,7 @@
                         datasets: [{
                             label: 'Revenue',
                             data: @json($chart['data']),
-                            backgroundColor: '#1649FF',
+                            backgroundColor: '#465fff',
                             borderRadius: 4,
                         }],
                     },

@@ -64,7 +64,7 @@ class PatientController extends Controller
 
     public function show(Patient $patient): View
     {
-        $patient->load(['appointments', 'invoices', 'prescriptions', 'treatmentPlans']);
+        $patient->load(['appointments', 'invoices', 'prescriptions', 'treatmentPlans.sessions']);
 
         return view('patients.show', compact('patient'));
     }

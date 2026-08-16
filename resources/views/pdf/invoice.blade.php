@@ -13,12 +13,12 @@
             font-size: 10pt;
         }
         table { border-collapse: collapse; }
-        .topbar { height: 2px; background-color: #1649FF; }
+        .topbar { height: 2px; background-color: #465fff; }
         .container { padding: 8mm 12mm 4mm 12mm; }
         .clinic-name { font-size: 16pt; font-weight: bold; color: #0b1e3d; margin: 4px 0 2px; }
-        .clinic-tagline { font-size: 8pt; font-style: italic; color: #1649FF; margin: 0 0 4px; }
+        .clinic-tagline { font-size: 8pt; font-style: italic; color: #465fff; margin: 0 0 4px; }
         .clinic-meta { font-size: 7pt; color: #6b7280; line-height: 1.6; }
-        .divider { height: 1px; background-color: #1649FF; margin: 6mm 0; }
+        .divider { height: 1px; background-color: #465fff; margin: 6mm 0; }
         .items-table th { background-color: #0b1e3d; color: #ffffff; padding: 6px 8px; text-align: left; font-size: 8pt; }
         .items-table td { padding: 6px 8px; font-size: 9pt; border-bottom: 1px solid #e5e7eb; }
         .footer-band { background-color: #0b1e3d; padding: 6px 12mm; margin-top: 10mm; }
@@ -54,7 +54,7 @@
                 <td style="width: 40%; vertical-align: top;">
                     <table style="width: 100%; background-color: #0b1e3d;">
                         <tr>
-                            <td colspan="2" style="background-color: #1649FF; color: #ffffff; font-size: 9pt; font-weight: bold; padding: 6px 8px;">
+                            <td colspan="2" style="background-color: #465fff; color: #ffffff; font-size: 9pt; font-weight: bold; padding: 6px 8px;">
                                 INVOICE DETAILS
                             </td>
                         </tr>
@@ -88,7 +88,7 @@
         <!-- Bill to -->
         <table style="width: 100%; background-color: #f3f4f6; margin-bottom: 6mm;">
             <tr>
-                <td style="border-left: 3px solid #1649FF; padding: 6px 10px;">
+                <td style="border-left: 3px solid #465fff; padding: 6px 10px;">
                     <div style="font-size: 7pt; color: #6b7280; letter-spacing: 1px;">BILL TO</div>
                     <div style="font-size: 13pt; font-weight: bold; color: #111827;">{{ $invoice->patient_name }}</div>
                     @if ($invoice->patient?->phone)
@@ -142,7 +142,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" style="padding-top: 5px;">
-                                <table style="width: 100%; background-color: #1649FF;">
+                                <table style="width: 100%; background-color: #465fff;">
                                     <tr>
                                         <td style="padding: 7px 10px; color: #ffffff; font-size: 10pt; font-weight: bold;">GRAND TOTAL</td>
                                         <td style="padding: 7px 10px; color: #ffffff; font-size: 13pt; font-weight: bold; text-align: right;">₹{{ number_format($invoice->grand_total, 2) }}</td>

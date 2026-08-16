@@ -118,7 +118,7 @@
                                            {{ $clinic->language === $code
                                                 ? 'text-white'
                                                 : 'bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-300 hover:bg-gray-100' }}"
-                                    @if ($clinic->language === $code) style="background: linear-gradient(135deg, #1649FF, #4f6df5);" @endif>
+                                    @if ($clinic->language === $code) style="background: linear-gradient(135deg, #465fff, #4f6df5);" @endif>
                                 <div class="text-2xl mb-2">{{ $lang['flag'] }}</div>
                                 <div class="text-sm font-medium">{{ $lang['label'] }}</div>
                             </button>
@@ -191,7 +191,7 @@
 
                 <a href="{{ Route::has('settings.billing') ? route('settings.billing') : '#' }}"
                    class="w-full mt-6 inline-flex items-center justify-center px-4 py-2.5 rounded-lg font-medium text-white hover:opacity-90"
-                   style="background-color:#1649FF;">
+                   style="background-color:#465fff;">
                     Upgrade Plan <i class="fa-solid fa-arrow-right ms-2"></i>
                 </a>
             </div>

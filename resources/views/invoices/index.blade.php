@@ -77,7 +77,7 @@
                             @foreach ($invoices as $invoice)
                                 <tr class="border-t border-gray-100 dark:border-gray-700">
                                     <td class="py-2">
-                                        <a href="{{ route('invoices.show', $invoice) }}" class="font-bold" style="color:#1649FF;">{{ $invoice->invoice_no }}</a>
+                                        <a href="{{ route('invoices.show', $invoice) }}" class="font-bold" style="color:#465fff;">{{ $invoice->invoice_no }}</a>
                                     </td>
                                     <td class="py-2">{{ $invoice->patient_name }}</td>
                                     <td class="py-2">{{ $invoice->invoice_date->format('d M Y') }}</td>

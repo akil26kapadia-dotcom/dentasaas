@@ -126,7 +126,7 @@
                         </div>
                         <div class="flex justify-between pt-2 border-t border-gray-100 dark:border-gray-700 text-base font-semibold">
                             <dt class="text-gray-900 dark:text-white">Grand Total</dt>
-                            <dd style="color:#1649FF;" x-text="'₹' + grandTotal().toFixed(2)"></dd>
+                            <dd style="color:#465fff;" x-text="'₹' + grandTotal().toFixed(2)"></dd>
                         </div>
                     </dl>
 

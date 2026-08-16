@@ -30,7 +30,7 @@
                             </table>
 
                             <p style="color:#374151;">
-                                <a href="{{ url('/login') }}" style="color:#1649FF;">{{ url('/login') }}</a>
+                                <a href="{{ url('/login') }}" style="color:#465fff;">{{ url('/login') }}</a>
                             </p>
 
                             <p style="color:#9ca3af; font-size: 12px;">

@@ -20,7 +20,7 @@
             <!-- Profile card -->
             <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6">
                 <div class="flex flex-col items-center text-center">
-                    <span class="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-semibold" style="background-color:#1649FF;">
+                    <span class="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-semibold" style="background-color:#465fff;">
                         {{ strtoupper(substr($patient->name, 0, 1)) }}
                     </span>
                     <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">{{ $patient->name }}</h3>

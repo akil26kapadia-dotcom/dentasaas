@@ -66,7 +66,7 @@
                         @endif
 
                         <div class="flex items-center justify-between mt-3">
-                            <span class="text-lg font-semibold" style="color:#1649FF;">₹{{ number_format($service->price, 0) }}</span>
+                            <span class="text-lg font-semibold" style="color:#465fff;">₹{{ number_format($service->price, 0) }}</span>
                             <span class="text-xs text-gray-500 dark:text-gray-400"><i class="fa-regular fa-clock"></i> {{ $service->duration_min }} min</span>
                         </div>
 

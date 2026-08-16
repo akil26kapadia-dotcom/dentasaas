@@ -2,20 +2,20 @@
 
 @php
     $colors = [
-        'pending' => 'bg-yellow-100 text-yellow-800',
-        'confirmed' => 'bg-blue-100 text-blue-800',
-        'completed' => 'bg-green-100 text-green-800',
-        'cancelled' => 'bg-red-100 text-red-800',
-        'paid' => 'bg-green-100 text-green-800',
-        'unpaid' => 'bg-red-100 text-red-800',
-        'planned' => 'bg-purple-100 text-purple-800',
-        'in_progress' => 'bg-amber-100 text-amber-800',
-        'active' => 'bg-green-100 text-green-800',
-        'inactive' => 'bg-red-100 text-red-800',
-        'approved' => 'bg-green-100 text-green-800',
-        'denied' => 'bg-red-100 text-red-800',
+        'pending' => 'bg-warning-50 text-warning-600',
+        'confirmed' => 'bg-blue-light-100 text-blue-light-600',
+        'completed' => 'bg-success-50 text-success-600',
+        'cancelled' => 'bg-error-50 text-error-600',
+        'paid' => 'bg-success-50 text-success-600',
+        'unpaid' => 'bg-error-50 text-error-600',
+        'planned' => 'bg-indigo-50 text-indigo-600',
+        'in_progress' => 'bg-warning-50 text-warning-600',
+        'active' => 'bg-success-50 text-success-600',
+        'inactive' => 'bg-error-50 text-error-600',
+        'approved' => 'bg-success-50 text-success-600',
+        'denied' => 'bg-error-50 text-error-600',
     ];
-    $class = $colors[$status] ?? 'bg-gray-100 text-gray-800';
+    $class = $colors[$status] ?? 'bg-gray-100 text-gray-600';
 @endphp
 
 <span {{ $attributes->merge(['class' => "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium $class"]) }}>
