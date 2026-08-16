@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\WelcomeMail;
 use App\Models\Clinic;
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ClinicController extends Controller
@@ -24,7 +26,9 @@ class ClinicController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('admin.clinics.index', compact('clinics'));
+        $plans = Plan::where('is_active', true)->orderBy('sort_order')->get();
+
+        return view('admin.clinics.index', compact('clinics', 'plans'));
     }
 
     public function create(): RedirectResponse
@@ -38,7 +42,7 @@ class ClinicController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
-            'plan' => ['required', 'in:free,basic,premium,deluxe'],
+            'plan' => ['required', Rule::in(Plan::pluck('key'))],
             'admin_name' => ['required', 'string', 'max:255'],
             'admin_email' => ['required', 'email', 'max:255', 'unique:users,email'],
         ]);
@@ -89,7 +93,7 @@ class ClinicController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
             'gst' => ['nullable', 'string', 'max:50'],
-            'plan' => ['required', 'in:free,basic,premium,deluxe'],
+            'plan' => ['required', Rule::in(Plan::pluck('key'))],
             'status' => ['required', 'in:active,inactive,pending'],
         ]);
 
@@ -108,7 +112,7 @@ class ClinicController extends Controller
     public function setPlan(Request $request, Clinic $clinic): RedirectResponse
     {
         $validated = $request->validate([
-            'plan' => ['required', 'in:free,basic,premium,deluxe'],
+            'plan' => ['required', Rule::in(Plan::pluck('key'))],
         ]);
 
         $clinic->update([

@@ -40,7 +40,9 @@
                             ['label' => 'Dashboard', 'icon' => 'fa-gauge', 'route' => 'admin.dashboard'],
                             ['label' => 'Clinics', 'icon' => 'fa-hospital', 'route' => 'admin.clinics.index'],
                             ['label' => 'Access Requests', 'icon' => 'fa-user-plus', 'route' => 'admin.access-requests.index'],
-                            ['label' => 'Settings', 'icon' => 'fa-gear', 'route' => 'admin.settings.index'],
+                            ['label' => 'Billing', 'icon' => 'fa-indian-rupee-sign', 'route' => 'admin.billing.index'],
+                            ['label' => 'Plans & Pricing', 'icon' => 'fa-layer-group', 'route' => 'admin.plans.index'],
+                            ['label' => 'Announcements', 'icon' => 'fa-bullhorn', 'route' => 'admin.announcements.index'],
                         ] as $item)
                             @php $active = Route::has($item['route']) && request()->routeIs($item['route'].'*'); @endphp
                             <a href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}"

@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\AccessRequestController;
 use App\Http\Controllers\Admin\AccessRequestController as AdminAccessRequestController;
+use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+use App\Http\Controllers\Admin\BillingController as AdminBillingController;
 use App\Http\Controllers\Admin\ClinicController as AdminClinicController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DashboardController;
@@ -39,6 +42,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->grou
     Route::get('access-requests', [AdminAccessRequestController::class, 'index'])->name('access-requests.index');
     Route::patch('access-requests/{accessRequest}/approve', [AdminAccessRequestController::class, 'approve'])->name('access-requests.approve');
     Route::patch('access-requests/{accessRequest}/deny', [AdminAccessRequestController::class, 'deny'])->name('access-requests.deny');
+
+    Route::get('billing', [AdminBillingController::class, 'index'])->name('billing.index');
+
+    Route::resource('plans', AdminPlanController::class)->except(['show', 'create', 'edit']);
+    Route::patch('plans/{plan}/toggle', [AdminPlanController::class, 'toggle'])->name('plans.toggle');
+
+    Route::resource('announcements', AdminAnnouncementController::class)->except(['show', 'create', 'edit']);
+    Route::patch('announcements/{announcement}/toggle', [AdminAnnouncementController::class, 'toggle'])->name('announcements.toggle');
 });
 
 // Authenticated (clinic tenants)

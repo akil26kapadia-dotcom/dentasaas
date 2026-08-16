@@ -16,12 +16,18 @@
     @endpush
 
     @php
-        $planMeta = [
-            'free' => ['label' => 'Free', 'price' => 0, 'highlight' => false, 'whatsapp' => 'Hi, I want to start with the FREE plan of DentaSaaS.'],
-            'basic' => ['label' => 'Basic', 'price' => 299, 'highlight' => false, 'whatsapp' => 'Hi, I am interested in DentaSaaS BASIC plan ₹299/month. Please help me get started.'],
-            'premium' => ['label' => 'Premium', 'price' => 799, 'highlight' => true, 'whatsapp' => 'Hi, I am interested in DentaSaaS PREMIUM plan ₹799/month. Please help me get started.'],
-            'deluxe' => ['label' => 'Deluxe', 'price' => 1499, 'highlight' => false, 'whatsapp' => 'Hi, I am interested in DentaSaaS DELUXE plan ₹1499/month. Please help me get started.'],
-        ];
+        $planMeta = $plans->mapWithKeys(fn ($plan) => [
+            $plan->key => [
+                'label' => $plan->name,
+                'price' => $plan->price_monthly,
+                'highlight' => $plan->is_highlighted,
+                'whatsapp' => $plan->key === 'free'
+                    ? 'Hi, I want to start with the FREE plan of DentaSaaS.'
+                    : 'Hi, I am interested in DentaSaaS '.strtoupper($plan->name).' plan ₹'.$plan->price_monthly.'/month. Please help me get started.',
+            ],
+        ]);
+
+        $limitsByKey = $plans->mapWithKeys(fn ($plan) => [$plan->key => $plan->toLimitsArray()]);
     @endphp
 
     <div x-data="{ billing: 'monthly' }">
@@ -67,7 +73,7 @@
                         <p class="text-xs text-transparent h-4" x-show="! (billing === 'annual' && {{ $meta['price'] }} > 0)">&nbsp;</p>
 
                         <ul class="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                            @php $limits = $plans[$key]; @endphp
+                            @php $limits = $limitsByKey[$key]; @endphp
                             <li><i class="fa-solid fa-check text-green-500 w-4"></i> {{ $limits['patients'] === -1 ? 'Unlimited' : $limits['patients'] }} patients</li>
                             <li><i class="fa-solid fa-check text-green-500 w-4"></i> {{ $limits['appointments'] === -1 ? 'Unlimited' : $limits['appointments'] }} appointments/mo</li>
                             <li><i class="fa-solid fa-check text-green-500 w-4"></i> {{ $limits['doctors'] === -1 ? 'Unlimited' : $limits['doctors'] }} doctor{{ $limits['doctors'] === 1 ? '' : 's' }}</li>
@@ -128,7 +134,7 @@
                                 <tr class="border-b border-gray-50 dark:border-gray-800 last:border-0">
                                     <td class="py-3 px-4 text-gray-600 dark:text-gray-300">{{ $label }}</td>
                                     @foreach ($planMeta as $key => $meta)
-                                        @php $value = $resolver($plans[$key]); @endphp
+                                        @php $value = $resolver($limitsByKey[$key]); @endphp
                                         <td class="py-3 px-4 text-center">
                                             @if (is_bool($value))
                                                 <i class="fa-solid {{ $value ? 'fa-check text-green-500' : 'fa-xmark text-gray-300' }}"></i>

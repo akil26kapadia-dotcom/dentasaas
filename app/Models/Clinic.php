@@ -70,6 +70,8 @@ class Clinic extends Model
 
     public function getPlanLimits(): array
     {
-        return config('plans.'.$this->plan, []);
+        $plan = Plan::where('key', $this->plan)->first();
+
+        return $plan ? $plan->toLimitsArray() : [];
     }
 }

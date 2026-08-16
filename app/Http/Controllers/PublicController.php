@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use Illuminate\View\View;
 
 class PublicController extends Controller
@@ -14,7 +15,7 @@ class PublicController extends Controller
     public function pricing(): View
     {
         return view('public.pricing', [
-            'plans' => config('plans'),
+            'plans' => Plan::where('is_active', true)->orderBy('sort_order')->get(),
         ]);
     }
 }
