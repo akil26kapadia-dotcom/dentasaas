@@ -81,7 +81,7 @@ class DemoClinicSeeder extends Seeder
 
         $invoiceService = app(InvoiceService::class);
 
-        $paidItems = [['name' => $services[0]->name, 'qty' => 1, 'price' => (float) $services[0]->price]];
+        $paidItems = [['service' => $services[0]->name, 'qty' => 1, 'price' => (float) $services[0]->price]];
         $paidTotals = $invoiceService->calculateTotals($paidItems, 0, 0);
 
         Invoice::create([
@@ -95,7 +95,7 @@ class DemoClinicSeeder extends Seeder
             'status' => 'paid',
         ]);
 
-        $unpaidItems = [['name' => $services[1]->name, 'qty' => 1, 'price' => (float) $services[1]->price]];
+        $unpaidItems = [['service' => $services[1]->name, 'qty' => 1, 'price' => (float) $services[1]->price]];
         $unpaidTotals = $invoiceService->calculateTotals($unpaidItems, 0, 0);
 
         Invoice::create([
