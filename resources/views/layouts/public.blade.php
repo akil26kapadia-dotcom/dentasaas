@@ -27,7 +27,7 @@
                         <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-indigo-600 dark:text-gray-300">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-indigo-600 dark:text-gray-300">Log in</a>
-                        <a href="{{ route('register') }}" class="text-sm font-medium bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Get Started</a>
+                        <a href="{{ route('request-access') }}" class="text-sm font-medium bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Get Started</a>
                     @endauth
                 </div>
             </div>
