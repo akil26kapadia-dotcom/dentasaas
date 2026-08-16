@@ -24,6 +24,20 @@ test('appointments index renders with quick filter counts', function () {
     $response->assertSee('New Appointment');
 });
 
+test('the today quick filter only returns appointments dated today', function () {
+    $doctor = happySmileDoctor();
+    $clinic = $doctor->clinic;
+
+    Appointment::factory()->create(['clinic_id' => $clinic->id, 'appt_date' => now(), 'patient_name' => 'Today Patient']);
+    Appointment::factory()->create(['clinic_id' => $clinic->id, 'appt_date' => now()->addDays(3), 'patient_name' => 'Future Patient']);
+
+    $response = $this->actingAs($doctor)->get('/appointments?date=today');
+
+    $response->assertOk();
+    $response->assertSee('Today Patient');
+    $response->assertDontSee('Future Patient');
+});
+
 test('appointment can be created via json and returns whatsapp url', function () {
     $doctor = happySmileDoctor();
     $patient = Patient::where('clinic_id', $doctor->clinic_id)->first();

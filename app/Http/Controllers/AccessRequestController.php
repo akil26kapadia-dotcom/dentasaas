@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AccessRequestRequest;
 use App\Mail\AccessRequestMail;
 use App\Models\AccessRequest;
+use App\Models\User;
+use App\Notifications\NewAccessRequestNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\View\View;
 
 class AccessRequestController extends Controller
@@ -24,6 +27,8 @@ class AccessRequestController extends Controller
         ]);
 
         Mail::to('admin@dentasaas.com')->send(new AccessRequestMail($accessRequest));
+
+        Notification::send(User::where('role', 'superadmin')->get(), new NewAccessRequestNotification($accessRequest));
 
         return redirect()->route('request-access')
             ->with('success', 'We will contact you within 24 hours.');

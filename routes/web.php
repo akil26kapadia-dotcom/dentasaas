@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AccessRequestController;
+use App\Http\Controllers\Admin\AccessRequestController as AdminAccessRequestController;
+use App\Http\Controllers\Admin\ClinicController as AdminClinicController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProfileController;
@@ -25,8 +28,18 @@ Route::get('/request-access', [AccessRequestController::class, 'create'])->name(
 Route::post('/request-access', [AccessRequestController::class, 'store'])->name('request-access.store');
 
 // Super admin
-Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('clinics', AdminClinicController::class);
+    Route::patch('clinics/{clinic}/plan', [AdminClinicController::class, 'setPlan'])->name('clinics.plan');
+    Route::patch('clinics/{clinic}/extend', [AdminClinicController::class, 'extendPlan'])->name('clinics.extend');
+    Route::patch('clinics/{clinic}/status', [AdminClinicController::class, 'toggleStatus'])->name('clinics.status');
+    Route::patch('clinics/{clinic}/reset-password', [AdminClinicController::class, 'resetPassword'])->name('clinics.reset-password');
+
+    Route::get('access-requests', [AdminAccessRequestController::class, 'index'])->name('access-requests.index');
+    Route::patch('access-requests/{accessRequest}/approve', [AdminAccessRequestController::class, 'approve'])->name('access-requests.approve');
+    Route::patch('access-requests/{accessRequest}/deny', [AdminAccessRequestController::class, 'deny'])->name('access-requests.deny');
 });
 
 // Authenticated (clinic tenants)
@@ -70,6 +83,10 @@ Route::middleware(['auth', 'clinic.active'])->group(function () {
     Route::delete('settings/logo', [SettingsController::class, 'removeLogo'])->name('settings.logo.remove');
     Route::put('settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password');
     Route::put('settings/language', [SettingsController::class, 'updateLanguage'])->name('settings.language');
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('notifications/{id}/read', [NotificationController::class, 'markRead'])->name('notifications.read');
+    Route::patch('notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
 });
 
 Route::middleware('auth')->group(function () {

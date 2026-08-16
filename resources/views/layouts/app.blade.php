@@ -98,17 +98,51 @@
                         </div>
 
                         <!-- Notification bell -->
+                        @php
+                            $unreadNotifications = auth()->user()?->unreadNotifications;
+                            $recentNotifications = auth()->user()?->notifications()->latest()->take(10)->get();
+                        @endphp
                         <div class="relative" x-data="{ open: false }">
                             <button @click="open = ! open" class="relative text-gray-500 dark:text-gray-300 hover:text-gray-700">
                                 <i class="fa-regular fa-bell text-lg"></i>
-                                @php $unread = 0; @endphp
-                                @if ($unread > 0)
-                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] leading-none rounded-full px-1.5 py-0.5">{{ $unread }}</span>
+                                @if ($unreadNotifications && $unreadNotifications->count() > 0)
+                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] leading-none rounded-full px-1.5 py-0.5">{{ $unreadNotifications->count() }}</span>
                                 @endif
                             </button>
                             <div x-show="open" x-cloak @click.outside="open = false"
-                                 class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-lg shadow-lg py-2 text-sm text-gray-500 dark:text-gray-300 z-50">
-                                <div class="px-4 py-2">No new notifications</div>
+                                 class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-lg shadow-lg py-2 text-sm z-50">
+                                <div class="px-4 py-2 flex items-center justify-between border-b border-gray-100 dark:border-gray-700">
+                                    <span class="font-medium text-gray-700 dark:text-gray-200">Notifications</span>
+                                    <a href="{{ route('notifications.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800">View all</a>
+                                </div>
+
+                                <div class="max-h-80 overflow-y-auto">
+                                    @forelse ($recentNotifications ?? [] as $notification)
+                                        <a href="{{ $notification->data['url'] ?? '#' }}"
+                                           class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 {{ $notification->read_at ? '' : 'bg-indigo-50/50 dark:bg-gray-700/50' }}">
+                                            <span class="w-8 h-8 rounded-full bg-indigo-50 dark:bg-gray-700 text-indigo-600 flex items-center justify-center shrink-0">
+                                                <i class="fa-solid {{ $notification->data['icon'] ?? 'fa-bell' }} text-xs"></i>
+                                            </span>
+                                            <span class="flex-1 min-w-0">
+                                                <span class="block font-medium text-gray-800 dark:text-gray-200 truncate">{{ $notification->data['title'] ?? 'Notification' }}</span>
+                                                <span class="block text-xs text-gray-500 dark:text-gray-400 truncate">{{ $notification->data['body'] ?? '' }}</span>
+                                                <span class="block text-[10px] text-gray-400 mt-0.5">{{ $notification->created_at->diffForHumans() }}</span>
+                                            </span>
+                                        </a>
+                                    @empty
+                                        <div class="px-4 py-6 text-center text-gray-400">No notifications yet.</div>
+                                    @endforelse
+                                </div>
+
+                                @if ($unreadNotifications && $unreadNotifications->count() > 0)
+                                    <form method="POST" action="{{ route('notifications.read-all') }}" class="border-t border-gray-100 dark:border-gray-700">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="w-full text-center px-4 py-2 text-xs font-medium text-indigo-600 hover:text-indigo-800">
+                                            Mark all read
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
 

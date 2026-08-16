@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\PlanLimitException;
 use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
+use App\Notifications\AppointmentConfirmedNotification;
 use App\Services\PlanService;
 use App\Services\WhatsAppService;
 use Illuminate\Http\JsonResponse;
@@ -25,10 +26,10 @@ class AppointmentController extends Controller
         $appointments = Appointment::query()
             ->with('patient')
             ->when($request->filled('date'), function ($query) use ($request) {
-                $date = $request->string('date') === 'today' ? today() : $request->string('date');
+                $date = $request->input('date') === 'today' ? today() : $request->input('date');
                 $query->whereDate('appt_date', $date);
             })
-            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
+            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->input('status')))
             ->when($request->filled('user_id'), fn ($query) => $query->where('user_id', $request->integer('user_id')))
             ->orderBy('appt_date')
             ->orderBy('appt_time')
@@ -88,7 +89,11 @@ class AppointmentController extends Controller
             'status' => ['required', 'in:pending,confirmed,completed,cancelled'],
         ]);
 
-        $appointment->update(['status' => $request->string('status')]);
+        $appointment->update(['status' => $request->input('status')]);
+
+        if ($appointment->status === 'confirmed' && $appointment->user_id) {
+            $appointment->doctor?->notify(new AppointmentConfirmedNotification($appointment));
+        }
 
         return response()->json(['success' => true, 'appointment' => $appointment]);
     }

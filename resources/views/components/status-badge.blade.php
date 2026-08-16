@@ -10,6 +10,10 @@
         'unpaid' => 'bg-red-100 text-red-800',
         'planned' => 'bg-purple-100 text-purple-800',
         'in_progress' => 'bg-amber-100 text-amber-800',
+        'active' => 'bg-green-100 text-green-800',
+        'inactive' => 'bg-red-100 text-red-800',
+        'approved' => 'bg-green-100 text-green-800',
+        'denied' => 'bg-red-100 text-red-800',
     ];
     $class = $colors[$status] ?? 'bg-gray-100 text-gray-800';
 @endphp

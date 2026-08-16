@@ -94,7 +94,7 @@ class TreatmentPlanController extends Controller
             'status' => ['required', 'in:planned,in_progress,completed,cancelled'],
         ]);
 
-        $plan->update(['status' => $request->string('status')]);
+        $plan->update(['status' => $request->input('status')]);
 
         return response()->json(['success' => true, 'plan' => $plan]);
     }

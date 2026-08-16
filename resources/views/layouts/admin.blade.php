@@ -28,7 +28,7 @@
                    class="fixed inset-y-0 left-0 z-40 w-64 flex flex-col bg-gray-900 text-gray-200 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0">
 
                 <div class="flex items-center gap-2 h-16 px-6 border-b border-gray-800 shrink-0">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2 font-semibold text-lg text-white">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 font-semibold text-lg text-white">
                         <i class="fa-solid fa-user-shield"></i>
                         <span>Super Admin</span>
                     </a>

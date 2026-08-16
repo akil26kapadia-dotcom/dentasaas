@@ -19,15 +19,15 @@ class PatientController extends Controller
     {
         $patients = Patient::query()
             ->when($request->filled('q'), function ($query) use ($request) {
-                $q = $request->string('q');
+                $q = $request->input('q');
                 $query->where(function ($query) use ($q) {
                     $query->where('name', 'like', "%{$q}%")
                         ->orWhere('phone', 'like', "%{$q}%")
                         ->orWhere('email', 'like', "%{$q}%");
                 });
             })
-            ->when($request->filled('gender'), fn ($query) => $query->where('gender', $request->string('gender')))
-            ->when($request->filled('blood_group'), fn ($query) => $query->where('blood_group', $request->string('blood_group')))
+            ->when($request->filled('gender'), fn ($query) => $query->where('gender', $request->input('gender')))
+            ->when($request->filled('blood_group'), fn ($query) => $query->where('blood_group', $request->input('blood_group')))
             ->latest()
             ->get();
 

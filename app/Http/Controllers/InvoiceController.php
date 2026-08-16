@@ -27,13 +27,13 @@ class InvoiceController extends Controller
 
         $invoices = Invoice::query()
             ->when($request->filled('q'), function ($query) use ($request) {
-                $q = $request->string('q');
+                $q = $request->input('q');
                 $query->where(function ($query) use ($q) {
                     $query->where('patient_name', 'like', "%{$q}%")
                         ->orWhere('invoice_no', 'like', "%{$q}%");
                 });
             })
-            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
+            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->input('status')))
             ->latest('invoice_date')
             ->get();
 
