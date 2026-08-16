@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\TreatmentSession;
+use App\Observers\TreatmentPlanObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
@@ -23,5 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Event::listen(Login::class, [UserObserver::class, 'login']);
+
+        TreatmentSession::observe(TreatmentPlanObserver::class);
     }
 }

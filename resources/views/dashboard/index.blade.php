@@ -7,6 +7,10 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" x-data="{ patientModal: false, apptModal: false, invoiceModal: false }">
 
+        @if (session('warning'))
+            <div class="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">{{ session('warning') }}</div>
+        @endif
+
         <!-- Plan usage -->
         <x-plan-usage-bar :usage="$planUsage" class="max-w-md" />
 
