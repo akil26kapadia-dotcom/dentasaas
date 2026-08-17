@@ -59,7 +59,11 @@ class PrescriptionController extends Controller
             'doctorName' => $prescription->doctor_name ?: Auth::user()->name,
         ])->setPaper('a4');
 
-        return $pdf->download("prescription-{$prescription->id}.pdf");
+        $filename = "prescription-{$prescription->id}.pdf";
+
+        return request()->boolean('print')
+            ? $pdf->stream($filename)
+            : $pdf->download($filename);
     }
 
     public function destroy(Prescription $prescription): RedirectResponse

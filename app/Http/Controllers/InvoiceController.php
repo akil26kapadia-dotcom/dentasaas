@@ -113,7 +113,11 @@ class InvoiceController extends Controller
             'doctorName' => Auth::user()->name,
         ])->setPaper('a4');
 
-        return $pdf->download("invoice-{$invoice->invoice_no}.pdf");
+        $filename = "invoice-{$invoice->invoice_no}.pdf";
+
+        return request()->boolean('print')
+            ? $pdf->stream($filename)
+            : $pdf->download($filename);
     }
 
     public function updateStatus(Invoice $invoice): RedirectResponse

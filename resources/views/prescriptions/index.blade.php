@@ -52,8 +52,12 @@
                                     <td class="py-2">{{ $rx->doctor_name ?? '—' }}</td>
                                     <td class="py-2">
                                         <div class="flex items-center gap-3">
+                                            <a href="{{ route('prescriptions.pdf', $rx) }}?print=1" title="Print"
+                                                target="_blank" class="text-gray-500 hover:text-gray-700">
+                                                <i class="fa-solid fa-print"></i>
+                                            </a>
                                             <a href="{{ route('prescriptions.pdf', $rx) }}" title="Download PDF"
-                                                class="text-green-600 hover:text-green-800">
+                                                class="text-gray-500 hover:text-gray-700">
                                                 <i class="fa-solid fa-file-pdf"></i>
                                             </a>
                                             <form method="POST" action="{{ route('prescriptions.destroy', $rx) }}"

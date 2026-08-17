@@ -31,7 +31,8 @@
             </div>
         </div>
 
-        <form method="GET" class="rounded-2xl border border-gray-200 bg-white p-4 mb-6 flex flex-wrap gap-3 items-end">
+        <form method="GET"
+            class="rounded-2xl border border-gray-200 bg-white p-4 mb-6 flex flex-wrap gap-3 items-end">
             <div class="flex-1 min-w-[200px]">
                 <x-input-label for="q" value="Search" />
                 <x-text-input id="q" name="q" class="block mt-1 w-full"
@@ -98,6 +99,9 @@
                                             <a href="{{ route('invoices.show', $invoice) }}" title="View"
                                                 class="text-indigo-600 hover:text-indigo-800"><i
                                                     class="fa-solid fa-eye"></i></a>
+                                            <a href="{{ route('invoices.pdf', $invoice) }}?print=1" title="Print"
+                                                target="_blank" class="text-gray-500 hover:text-gray-700"><i
+                                                    class="fa-solid fa-print"></i></a>
                                             <a href="{{ route('invoices.pdf', $invoice) }}" title="Download PDF"
                                                 class="text-gray-500 hover:text-gray-700"><i
                                                     class="fa-solid fa-file-pdf"></i></a>

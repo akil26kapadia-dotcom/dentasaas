@@ -6,6 +6,10 @@
                 <p class="text-sm text-gray-500 mt-1">{{ $invoice->invoice_date->format('d M Y') }}</p>
             </div>
             <div class="flex items-center gap-3">
+                <a href="{{ route('invoices.pdf', $invoice) }}?print=1" target="_blank"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50">
+                    <i class="fa-solid fa-print"></i> Print
+                </a>
                 <a href="{{ route('invoices.pdf', $invoice) }}"
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50">
                     <i class="fa-solid fa-file-pdf"></i> Download PDF
