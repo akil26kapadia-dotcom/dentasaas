@@ -5,7 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'DentaSaaS') }} @isset($header) - {{ $header }} @endisset</title>
+        @php
+            $pageTitle = null;
+            if (isset($header) && preg_match('/<h2\b[^>]*>(.*?)<\/h2>/is', (string) $header, $headerMatch)) {
+                $pageTitle = str($headerMatch[1])->stripTags()->squish()->toString();
+            } elseif (isset($header)) {
+                $pageTitle = str($header)->stripTags()->squish()->toString();
+            }
+        @endphp
+        <title>{{ config('app.name', 'DentaSaaS') }}{{ $pageTitle ? ' - '.$pageTitle : '' }}</title>
+
+        <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+        <link rel="alternate icon" href="{{ asset('favicon.ico') }}" sizes="any">
+        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
 
         <!-- Font Awesome 6 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
