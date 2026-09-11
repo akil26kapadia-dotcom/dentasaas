@@ -23,4 +23,12 @@
             </x-primary-button>
         </div>
     </form>
+
+    <div class="mt-6 pt-4 border-t border-gray-100 text-sm text-gray-500 text-center">
+        Not receiving the email?
+        <a href="https://wa.me/918488055253?text={{ urlencode('Hi, I need help resetting my DentaSaaS password.') }}"
+            target="_blank" rel="noopener" class="font-medium text-green-600 hover:text-green-700">
+            <i class="fa-brands fa-whatsapp"></i> Contact support on WhatsApp
+        </a>
+    </div>
 </x-guest-layout>

@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Mail\WelcomeMail;
 use App\Models\Clinic;
 use App\Models\Plan;
 use App\Models\User;
+use App\Services\CredentialMailer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ClinicController extends Controller
 {
+    public function __construct(protected CredentialMailer $credentialMailer) {}
+
     public function index(): View
     {
         $clinics = Clinic::withCount([
@@ -69,7 +70,7 @@ class ClinicController extends Controller
             'email_verified_at' => now(),
         ]);
 
-        Mail::to($admin->email)->send(new WelcomeMail($clinic, $admin, $password));
+        $this->credentialMailer->send($admin, $clinic, $password);
 
         return redirect()->route('admin.clinics.index')->with('success', 'Clinic created and admin invited.');
     }
@@ -141,18 +142,25 @@ class ClinicController extends Controller
         return redirect()->route('admin.clinics.index')->with('success', 'Clinic status updated.');
     }
 
-    public function resetPassword(Clinic $clinic): RedirectResponse
+    public function resetPassword(Request $request, Clinic $clinic): RedirectResponse
     {
         $admin = $clinic->users()->where('role', 'admin')->first() ?? $clinic->users()->first();
 
         abort_unless($admin, 404, 'No admin user found for this clinic.');
 
-        $password = Str::password(12);
+        $validated = $request->validate([
+            'password' => ['nullable', 'string', 'min:8'],
+        ]);
+
+        $password = $validated['password'] ?? Str::password(12);
         $admin->update(['password' => Hash::make($password)]);
 
-        Mail::to($admin->email)->send(new WelcomeMail($clinic, $admin, $password));
+        $mailSent = $this->credentialMailer->send($admin, $clinic, $password);
 
-        return redirect()->route('admin.clinics.index')->with('success', 'Password reset and emailed to clinic admin.');
+        return redirect()->route('admin.clinics.index')->with(
+            'success',
+            $mailSent ? 'Password reset and emailed to clinic admin.' : 'Password reset. Email delivery failed — credentials shown below.'
+        );
     }
 
     protected function generateUniqueSlug(string $name): string

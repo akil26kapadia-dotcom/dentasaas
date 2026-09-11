@@ -13,8 +13,18 @@
         newModalOpen: false,
         editModalOpen: false,
         editClinic: {},
-        openEdit(clinic) { this.editClinic = clinic;
-            this.editModalOpen = true; }
+        openEdit(clinic) {
+            this.editClinic = clinic;
+            this.editModalOpen = true;
+        },
+        resetModalOpen: false,
+        resetClinic: {},
+        customPassword: '',
+        openReset(clinic) {
+            this.resetClinic = clinic;
+            this.customPassword = '';
+            this.resetModalOpen = true;
+        }
     }">
 
         @if (session('success'))
@@ -90,14 +100,18 @@
                                                 </button>
                                             </form>
 
+                                            <button type="button"
+                                                @click="openReset({ id: {{ $clinic->id }}, name: @js($clinic->name) })"
+                                                title="Reset Password" class="text-amber-600 hover:text-amber-800">
+                                                <i class="fa-solid fa-key"></i>
+                                            </button>
+
                                             <form method="POST"
-                                                action="{{ route('admin.clinics.reset-password', $clinic) }}"
-                                                onsubmit="return confirm('Reset password and email the clinic admin?');"
-                                                title="Reset Password">
+                                                action="{{ route('admin.clinics.impersonate', $clinic) }}"
+                                                title="Login as Clinic">
                                                 @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="text-amber-600 hover:text-amber-800">
-                                                    <i class="fa-solid fa-key"></i>
+                                                <button type="submit" class="text-indigo-600 hover:text-indigo-800">
+                                                    <i class="fa-solid fa-right-to-bracket"></i>
                                                 </button>
                                             </form>
 
@@ -260,6 +274,36 @@
                         <button type="submit"
                             class="px-4 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">Save
                             Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reset password modal -->
+        <div x-show="resetModalOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center px-4"
+            style="background-color: rgba(15,23,42,0.5);">
+            <div @click.outside="resetModalOpen = false"
+                class="bg-white rounded-2xl shadow-theme-lg w-full max-w-md p-6">
+                <h3 class="font-semibold text-lg text-gray-900 mb-1">Reset Password</h3>
+                <p class="text-sm text-gray-500 mb-4">for <span x-text="resetClinic.name"></span>'s admin account</p>
+
+                <form method="POST" :action="`{{ url('admin/clinics') }}/${resetClinic.id}/reset-password`">
+                    @csrf
+                    @method('PATCH')
+
+                    <x-input-label value="New Password (optional)" />
+                    <input type="text" name="password" x-model="customPassword" minlength="8"
+                        placeholder="Leave blank to auto-generate"
+                        class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <p class="text-xs text-gray-400 mt-1">We'll try to email this to the clinic admin — and show it to
+                        you here either way, in case email delivery fails.</p>
+
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button type="button" @click="resetModalOpen = false"
+                            class="px-4 py-2 text-sm text-gray-600">Cancel</button>
+                        <button type="submit"
+                            class="px-4 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">Reset
+                            Password</button>
                     </div>
                 </form>
             </div>

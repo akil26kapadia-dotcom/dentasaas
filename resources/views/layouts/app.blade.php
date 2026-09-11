@@ -1,56 +1,72 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @php
-            $pageTitle = null;
-            if (isset($header) && preg_match('/<h2\b[^>]*>(.*?)<\/h2>/is', (string) $header, $headerMatch)) {
-                $pageTitle = str($headerMatch[1])->stripTags()->squish()->toString();
-            } elseif (isset($header)) {
-                $pageTitle = str($header)->stripTags()->squish()->toString();
-            }
-        @endphp
-        <title>{{ config('app.name', 'DentaSaaS') }}{{ $pageTitle ? ' - '.$pageTitle : '' }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-        <link rel="alternate icon" href="{{ asset('favicon.ico') }}" sizes="any">
-        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    @php
+        $pageTitle = null;
+        if (isset($header) && preg_match('/<h2\b[^>]*>(.*?)<\/h2>/is', (string) $header, $headerMatch)) {
+            $pageTitle = str($headerMatch[1])->stripTags()->squish()->toString();
+        } elseif (isset($header)) {
+            $pageTitle = str($header)->stripTags()->squish()->toString();
+        }
+    @endphp
+    <title>{{ config('app.name', 'DentaSaaS') }}{{ $pageTitle ? ' - ' . $pageTitle : '' }}</title>
 
-        <!-- Font Awesome 6 -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
 
-        <!-- Select2 -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-        <!-- DataTables (Tailwind theme) -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.tailwindcss.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
 
-        {{-- Alpine.js ships bundled via Vite (resources/js/app.js) — no CDN copy here to avoid a double-init. --}}
+    <!-- DataTables (Tailwind theme) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.tailwindcss.min.css">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Alpine.js ships bundled via Vite (resources/js/app.js) — no CDN copy here to avoid a double-init. --}}
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.8/js/dataTables.tailwindcss.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    </head>
-    <body class="font-sans antialiased bg-gray-50">
-        <div x-data="{ sidebarOpen: false }" class="flex h-screen overflow-hidden">
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.tailwindcss.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<body class="font-sans antialiased bg-gray-50">
+    <div class="flex h-screen flex-col overflow-hidden">
+        @if (session('impersonator_id'))
+            <div
+                class="flex shrink-0 items-center justify-center gap-3 bg-amber-500 px-4 py-2 text-center text-sm font-medium text-white">
+                <i class="fa-solid fa-user-secret"></i>
+                <span>You're viewing DentaSaaS as <strong>{{ tenant()?->name }}</strong> on behalf of support.</span>
+                <form method="POST" action="{{ route('impersonate.stop') }}">
+                    @csrf
+                    <button type="submit" class="underline hover:no-underline">Return to Admin</button>
+                </form>
+            </div>
+        @endif
+
+        <div x-data="{ sidebarOpen: false }" class="flex flex-1 overflow-hidden">
 
             <!-- Mobile overlay -->
             <div x-show="sidebarOpen" x-cloak @click="sidebarOpen = false"
-                 class="fixed inset-0 z-40 bg-gray-900/50 lg:hidden" x-transition.opacity></div>
+                class="fixed inset-0 z-40 bg-gray-900/50 lg:hidden" x-transition.opacity></div>
 
             <!-- Sidebar -->
             <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-                   class="fixed inset-y-0 left-0 z-50 flex h-screen w-[260px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 transition-transform duration-200 ease-linear lg:static lg:translate-x-0">
+                class="fixed inset-y-0 left-0 z-50 flex h-screen w-[260px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 transition-transform duration-200 ease-linear lg:static lg:translate-x-0">
 
                 <div class="flex items-center gap-2 pt-6 pb-6 shrink-0">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2 font-semibold text-lg" style="color: {{ tenant()?->theme_color ?? '#465fff' }}">
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2 font-semibold text-lg"
+                        style="color: {{ tenant()?->theme_color ?? '#465fff' }}">
                         <i class="fa-solid fa-tooth"></i>
                         <span>{{ tenant()?->name ?? config('app.name') }}</span>
                     </a>
@@ -60,22 +76,12 @@
                     <h3 class="mb-4 text-xs uppercase leading-5 text-gray-400">Menu</h3>
 
                     <nav class="flex flex-col gap-1 mb-6">
-                        @foreach ([
-                            ['label' => 'Dashboard', 'icon' => 'fa-gauge', 'route' => 'dashboard'],
-                            ['label' => 'Appointments', 'icon' => 'fa-calendar-check', 'route' => 'appointments.index'],
-                            ['label' => 'Patients', 'icon' => 'fa-users', 'route' => 'patients.index'],
-                            ['label' => 'Services', 'icon' => 'fa-tooth', 'route' => 'services.index'],
-                            ['label' => 'Invoices', 'icon' => 'fa-file-invoice', 'route' => 'invoices.index'],
-                            ['label' => 'Prescriptions', 'icon' => 'fa-prescription-bottle-medical', 'route' => 'prescriptions.index'],
-                            ['label' => 'Treatment Plans', 'icon' => 'fa-diagram-project', 'route' => 'treatment-plans.index'],
-                            ['label' => 'Analytics', 'icon' => 'fa-chart-bar', 'route' => 'analytics.index'],
-                            ['label' => 'Doctors', 'icon' => 'fa-user-doctor', 'route' => 'doctors.index'],
-                            ['label' => 'Settings', 'icon' => 'fa-gear', 'route' => 'settings.index'],
-                        ] as $item)
+                        @foreach ([['label' => 'Dashboard', 'icon' => 'fa-gauge', 'route' => 'dashboard'], ['label' => 'Appointments', 'icon' => 'fa-calendar-check', 'route' => 'appointments.index'], ['label' => 'Patients', 'icon' => 'fa-users', 'route' => 'patients.index'], ['label' => 'Services', 'icon' => 'fa-tooth', 'route' => 'services.index'], ['label' => 'Invoices', 'icon' => 'fa-file-invoice', 'route' => 'invoices.index'], ['label' => 'Prescriptions', 'icon' => 'fa-prescription-bottle-medical', 'route' => 'prescriptions.index'], ['label' => 'Treatment Plans', 'icon' => 'fa-diagram-project', 'route' => 'treatment-plans.index'], ['label' => 'Analytics', 'icon' => 'fa-chart-bar', 'route' => 'analytics.index'], ['label' => 'Doctors', 'icon' => 'fa-user-doctor', 'route' => 'doctors.index'], ['label' => 'Settings', 'icon' => 'fa-gear', 'route' => 'settings.index']] as $item)
                             @php $active = Route::has($item['route']) && request()->routeIs($item['route'].'*'); @endphp
                             <a href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}"
-                               class="menu-item group {{ $active ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <i class="fa-solid {{ $item['icon'] }} w-5 text-center {{ $active ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"></i>
+                                class="menu-item group {{ $active ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <i
+                                    class="fa-solid {{ $item['icon'] }} w-5 text-center {{ $active ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"></i>
                                 <span>{{ __($item['label']) }}</span>
                             </a>
                         @endforeach
@@ -97,7 +103,7 @@
                     <div class="flex grow items-center justify-between px-4 py-3 sm:px-6 lg:px-6">
                         <div class="flex items-center gap-3">
                             <button @click="sidebarOpen = ! sidebarOpen"
-                                    class="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-500 lg:hidden">
+                                class="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-500 lg:hidden">
                                 <i class="fa-solid fa-bars"></i>
                             </button>
                             <span class="hidden sm:block font-medium text-gray-700">{{ tenant()?->name }}</span>
@@ -106,13 +112,15 @@
                         <div class="flex items-center gap-3">
                             <!-- Language toggle -->
                             @if (tenant())
-                                <div class="hidden sm:flex items-center text-sm border border-gray-200 rounded-full overflow-hidden">
+                                <div
+                                    class="hidden sm:flex items-center text-sm border border-gray-200 rounded-full overflow-hidden">
                                     @foreach (['en' => 'EN', 'hi' => 'HI'] as $code => $label)
                                         <form method="POST" action="{{ route('settings.language') }}">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="language" value="{{ $code }}">
-                                            <button type="submit" class="px-2.5 py-1 {{ app()->getLocale() === $code ? 'bg-indigo-500 text-white' : 'text-gray-500 hover:bg-gray-50' }}">
+                                            <button type="submit"
+                                                class="px-2.5 py-1 {{ app()->getLocale() === $code ? 'bg-indigo-500 text-white' : 'text-gray-500 hover:bg-gray-50' }}">
                                                 {{ $label }}
                                             </button>
                                         </form>
@@ -127,44 +135,54 @@
                             @endphp
                             <div class="relative" x-data="{ open: false }">
                                 <button @click="open = ! open"
-                                        class="relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                                    class="relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                                     @if ($unreadNotifications && $unreadNotifications->count() > 0)
                                         <span class="absolute top-0.5 right-0 z-10 h-2 w-2 rounded-full bg-orange-400">
-                                            <span class="absolute -z-10 inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
+                                            <span
+                                                class="absolute -z-10 inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
                                         </span>
                                     @endif
                                     <i class="fa-regular fa-bell text-lg"></i>
                                 </button>
                                 <div x-show="open" x-cloak @click.outside="open = false"
-                                     class="absolute right-0 mt-3 flex w-80 flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg z-50 sm:w-96">
+                                    class="absolute right-0 mt-3 flex w-80 flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg z-50 sm:w-96">
                                     <div class="mb-3 flex items-center justify-between border-b border-gray-100 pb-3">
                                         <h5 class="font-semibold text-gray-800">{{ __('Notifications') }}</h5>
-                                        <a href="{{ route('notifications.index') }}" class="text-xs font-medium text-indigo-500 hover:text-indigo-600">{{ __('View all') }}</a>
+                                        <a href="{{ route('notifications.index') }}"
+                                            class="text-xs font-medium text-indigo-500 hover:text-indigo-600">{{ __('View all') }}</a>
                                     </div>
 
                                     <div class="max-h-80 overflow-y-auto custom-scrollbar">
                                         @forelse ($recentNotifications ?? [] as $notification)
                                             <a href="{{ $notification->data['url'] ?? '#' }}"
-                                               class="flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100 {{ $notification->read_at ? '' : 'bg-indigo-50/60' }}">
-                                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-500">
-                                                    <i class="fa-solid {{ $notification->data['icon'] ?? 'fa-bell' }} text-xs"></i>
+                                                class="flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100 {{ $notification->read_at ? '' : 'bg-indigo-50/60' }}">
+                                                <span
+                                                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-500">
+                                                    <i
+                                                        class="fa-solid {{ $notification->data['icon'] ?? 'fa-bell' }} text-xs"></i>
                                                 </span>
                                                 <span class="min-w-0">
-                                                    <span class="block truncate text-sm font-medium text-gray-800">{{ $notification->data['title'] ?? 'Notification' }}</span>
-                                                    <span class="block truncate text-xs text-gray-500">{{ $notification->data['body'] ?? '' }}</span>
-                                                    <span class="mt-0.5 block text-xs text-gray-400">{{ $notification->created_at->diffForHumans() }}</span>
+                                                    <span
+                                                        class="block truncate text-sm font-medium text-gray-800">{{ $notification->data['title'] ?? 'Notification' }}</span>
+                                                    <span
+                                                        class="block truncate text-xs text-gray-500">{{ $notification->data['body'] ?? '' }}</span>
+                                                    <span
+                                                        class="mt-0.5 block text-xs text-gray-400">{{ $notification->created_at->diffForHumans() }}</span>
                                                 </span>
                                             </a>
                                         @empty
-                                            <div class="px-3 py-6 text-center text-gray-400">{{ __('No notifications yet.') }}</div>
+                                            <div class="px-3 py-6 text-center text-gray-400">
+                                                {{ __('No notifications yet.') }}</div>
                                         @endforelse
                                     </div>
 
                                     @if ($unreadNotifications && $unreadNotifications->count() > 0)
-                                        <form method="POST" action="{{ route('notifications.read-all') }}" class="mt-3 border-t border-gray-100 pt-3">
+                                        <form method="POST" action="{{ route('notifications.read-all') }}"
+                                            class="mt-3 border-t border-gray-100 pt-3">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="flex w-full justify-center rounded-lg border border-gray-200 p-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                            <button type="submit"
+                                                class="flex w-full justify-center rounded-lg border border-gray-200 p-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
                                                 {{ __('Mark all read') }}
                                             </button>
                                         </form>
@@ -175,17 +193,21 @@
                             <!-- User dropdown -->
                             <div class="relative" x-data="{ open: false }">
                                 <button @click="open = ! open" class="flex items-center gap-2">
-                                    <span class="flex h-11 w-11 items-center justify-center rounded-full text-white text-sm font-semibold"
-                                          style="background-color: {{ auth()->user()?->color ?? '#465fff' }}">
+                                    <span
+                                        class="flex h-11 w-11 items-center justify-center rounded-full text-white text-sm font-semibold"
+                                        style="background-color: {{ auth()->user()?->color ?? '#465fff' }}">
                                         {{ strtoupper(substr(auth()->user()?->name ?? '?', 0, 1)) }}
                                     </span>
-                                    <span class="hidden sm:block text-sm font-medium text-gray-700">{{ auth()->user()?->name }}</span>
-                                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 hidden sm:block" :class="open ? 'rotate-180' : ''"></i>
+                                    <span
+                                        class="hidden sm:block text-sm font-medium text-gray-700">{{ auth()->user()?->name }}</span>
+                                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 hidden sm:block"
+                                        :class="open ? 'rotate-180' : ''"></i>
                                 </button>
                                 <div x-show="open" x-cloak @click.outside="open = false"
-                                     class="absolute right-0 mt-3 flex w-56 flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg z-50">
+                                    class="absolute right-0 mt-3 flex w-56 flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg z-50">
                                     <div class="mb-2 border-b border-gray-100 pb-3 px-1">
-                                        <span class="block text-sm font-medium text-gray-700">{{ auth()->user()?->name }}</span>
+                                        <span
+                                            class="block text-sm font-medium text-gray-700">{{ auth()->user()?->name }}</span>
                                         <span class="block text-xs text-gray-400">{{ auth()->user()?->email }}</span>
                                     </div>
                                     <a href="{{ route('profile.edit') }}" class="menu-item menu-item-inactive">
@@ -195,7 +217,8 @@
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit" class="menu-item menu-item-inactive w-full text-left">
-                                            <i class="fa-solid fa-right-from-bracket w-5 text-center menu-item-icon-inactive"></i>
+                                            <i
+                                                class="fa-solid fa-right-from-bracket w-5 text-center menu-item-icon-inactive"></i>
                                             {{ __('Log Out') }}
                                         </button>
                                     </form>
@@ -227,7 +250,11 @@
                 </main>
             </div>
         </div>
+    </div>
 
-        @stack('scripts')
-    </body>
+    <x-credentials-modal />
+
+    @stack('scripts')
+</body>
+
 </html>

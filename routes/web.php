@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementContro
 use App\Http\Controllers\Admin\BillingController as AdminBillingController;
 use App\Http\Controllers\Admin\ClinicController as AdminClinicController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ImpersonationController as AdminImpersonationController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AppointmentController;
@@ -38,6 +39,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->grou
     Route::patch('clinics/{clinic}/extend', [AdminClinicController::class, 'extendPlan'])->name('clinics.extend');
     Route::patch('clinics/{clinic}/status', [AdminClinicController::class, 'toggleStatus'])->name('clinics.status');
     Route::patch('clinics/{clinic}/reset-password', [AdminClinicController::class, 'resetPassword'])->name('clinics.reset-password');
+    Route::post('clinics/{clinic}/impersonate', [AdminImpersonationController::class, 'start'])->name('clinics.impersonate');
 
     Route::get('access-requests', [AdminAccessRequestController::class, 'index'])->name('access-requests.index');
     Route::patch('access-requests/{accessRequest}/approve', [AdminAccessRequestController::class, 'approve'])->name('access-requests.approve');
@@ -103,6 +105,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/impersonate/stop', [AdminImpersonationController::class, 'stop'])->name('impersonate.stop');
 });
 
 require __DIR__.'/auth.php';

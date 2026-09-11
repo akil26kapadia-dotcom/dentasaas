@@ -6,8 +6,10 @@ use App\Mail\PlanExpiredMail;
 use App\Models\Clinic;
 use App\Notifications\PlanExpiryNotification;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Throwable;
 
 class CheckPlanExpiry extends Command
 {
@@ -30,7 +32,11 @@ class CheckPlanExpiry extends Command
             $recipient = $clinic->email ?: $clinic->users()->where('role', 'admin')->value('email');
 
             if ($recipient) {
-                Mail::to($recipient)->send(new PlanExpiredMail($clinic, $expiredPlan));
+                try {
+                    Mail::to($recipient)->send(new PlanExpiredMail($clinic, $expiredPlan));
+                } catch (Throwable $e) {
+                    Log::warning('Plan-expired email failed to send.', ['clinic_id' => $clinic->id, 'error' => $e->getMessage()]);
+                }
             }
 
             $this->info("Downgraded {$clinic->name} from {$expiredPlan} to free.");

@@ -4,20 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\PlanLimitException;
 use App\Http\Requests\DoctorRequest;
-use App\Mail\WelcomeMail;
 use App\Models\User;
+use App\Services\CredentialMailer;
 use App\Services\PlanService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class DoctorController extends Controller
 {
-    public function __construct(protected PlanService $planService) {}
+    public function __construct(
+        protected PlanService $planService,
+        protected CredentialMailer $credentialMailer,
+    ) {}
 
     public function index(): View
     {
@@ -62,7 +64,7 @@ class DoctorController extends Controller
             'email_verified_at' => now(),
         ]);
 
-        Mail::to($doctor->email)->send(new WelcomeMail($clinic, $doctor, $password));
+        $this->credentialMailer->send($doctor, $clinic, $password);
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json($doctor, 201);

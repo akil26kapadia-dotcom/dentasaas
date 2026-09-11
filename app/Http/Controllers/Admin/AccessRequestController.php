@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Mail\WelcomeMail;
 use App\Models\AccessRequest;
 use App\Models\Clinic;
 use App\Models\User;
+use App\Services\CredentialMailer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AccessRequestController extends Controller
 {
+    public function __construct(protected CredentialMailer $credentialMailer) {}
+
     public function index(): View
     {
         $requests = AccessRequest::where('status', 'pending')->latest()->get();
@@ -45,7 +46,7 @@ class AccessRequestController extends Controller
             'email_verified_at' => now(),
         ]);
 
-        Mail::to($admin->email)->send(new WelcomeMail($clinic, $admin, $password));
+        $this->credentialMailer->send($admin, $clinic, $password);
 
         $accessRequest->update(['status' => 'approved']);
 
