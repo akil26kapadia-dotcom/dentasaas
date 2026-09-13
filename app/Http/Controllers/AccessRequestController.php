@@ -26,7 +26,7 @@ class AccessRequestController extends Controller
             'status' => 'pending',
         ]);
 
-        Mail::to('admin@dentasaas.com')->send(new AccessRequestMail($accessRequest));
+        Mail::to(config('mail.from.address'))->send(new AccessRequestMail($accessRequest));
 
         Notification::send(User::where('role', 'superadmin')->get(), new NewAccessRequestNotification($accessRequest));
 
