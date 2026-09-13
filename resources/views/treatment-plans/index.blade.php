@@ -9,18 +9,16 @@
             </div>
             <div class="flex items-center gap-3">
                 <div class="inline-flex rounded-lg border border-gray-200 overflow-hidden">
-                    <button @click="switchView('kanban')"
-                        :class="view === 'kanban' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-600'"
+                    <button @click="$dispatch('switch-treatment-plans-view', 'kanban')"
                         class="px-3 py-2 text-sm font-medium">
                         <i class="fa-solid fa-table-columns"></i> Kanban
                     </button>
-                    <button @click="switchView('list')"
-                        :class="view === 'list' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-600'"
+                    <button @click="$dispatch('switch-treatment-plans-view', 'list')"
                         class="px-3 py-2 text-sm font-medium">
                         <i class="fa-solid fa-list"></i> List
                     </button>
                 </div>
-                <button @click="openNewPlan()"
+                <button @click="$dispatch('open-new-treatment-plan')"
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">
                     <i class="fa-solid fa-plus"></i> New Plan
                 </button>
@@ -28,7 +26,9 @@
         </div>
     </x-slot>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="treatmentPlansPage()" x-init="init()">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="treatmentPlansPage()" x-init="init()"
+        x-on:switch-treatment-plans-view.window="switchView($event.detail)"
+        x-on:open-new-treatment-plan.window="openNewPlan()">
 
         @if (session('success'))
             <div class="mb-4 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">

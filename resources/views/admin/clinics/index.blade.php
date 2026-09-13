@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Clinics</h2>
-            <button @click="newModalOpen = true"
+            <button @click="$dispatch('open-new-clinic')"
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">
                 <i class="fa-solid fa-plus"></i> New Clinic
             </button>
@@ -25,7 +25,8 @@
             this.customPassword = '';
             this.resetModalOpen = true;
         }
-    }">
+    }"
+    x-on:open-new-clinic.window="newModalOpen = true">
 
         @if (session('success'))
             <div class="mb-4 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">

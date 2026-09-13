@@ -8,7 +8,7 @@
                 </p>
             </div>
             <button
-                @click="modalOpen = true; editingId = null; form = { name: '', email: '', role: 'doctor', specialty: '', color: '#465fff' }"
+                @click="$dispatch('open-new-doctor')"
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">
                 <i class="fa-solid fa-plus"></i> Add Doctor
             </button>
@@ -24,7 +24,8 @@
             this.form = { name: doctor.name, email: doctor.email, role: doctor.role, specialty: doctor.specialty ?? '', color: doctor.color };
             this.modalOpen = true;
         }
-    }">
+    }"
+    x-on:open-new-doctor.window="modalOpen = true; editingId = null; form = { name: '', email: '', role: 'doctor', specialty: '', color: '#465fff' }">
 
         @if (session('success'))
             <div class="mb-4 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">

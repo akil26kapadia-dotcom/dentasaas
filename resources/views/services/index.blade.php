@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Services</h2>
             <button
-                @click="modalOpen = true; editingId = null; form = { name: '', name_hi: '', price: '', duration_min: 30, description: '', icon: 'fa-tooth', is_active: true }"
+                @click="$dispatch('open-new-service')"
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">
                 <i class="fa-solid fa-plus"></i> Add Service
             </button>
@@ -27,7 +27,8 @@
             };
             this.modalOpen = true;
         }
-    }">
+    }"
+    x-on:open-new-service.window="modalOpen = true; editingId = null; form = { name: '', name_hi: '', price: '', duration_min: 30, description: '', icon: 'fa-tooth', is_active: true }">
 
         @if (session('success'))
             <div class="mb-4 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Announcements</h2>
-            <button @click="openNew()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">
+            <button @click="$dispatch('open-new-announcement')" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">
                 <i class="fa-solid fa-plus"></i> New Announcement
             </button>
         </div>
@@ -23,7 +23,8 @@
                 this.form = { title: a.title, body: a.body, type: a.type, is_active: !!a.is_active, starts_at: a.starts_at ? a.starts_at.substring(0,16) : '', ends_at: a.ends_at ? a.ends_at.substring(0,16) : '' };
                 this.modalOpen = true;
             }
-         }">
+         }"
+         x-on:open-new-announcement.window="openNew()">
 
         @if (session('success'))
             <div class="mb-4 rounded-lg bg-success-50 border border-green-200 px-4 py-3 text-sm text-success-600">{{ session('success') }}</div>
