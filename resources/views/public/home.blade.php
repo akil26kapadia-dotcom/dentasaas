@@ -100,10 +100,10 @@
         <i class="hero-tooth fa-solid fa-tooth" aria-hidden="true" style="right:14%; bottom:-2rem; font-size:2.25rem; --tooth-opacity:0.1; animation-duration:20s; animation-delay:6s;"></i>
         <i class="hero-tooth fa-solid fa-tooth" aria-hidden="true" style="right:30%; bottom:-2rem; font-size:1.25rem; --tooth-opacity:0.14; animation-duration:14s; animation-delay:9s;"></i>
 
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-24">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="text-center lg:text-left">
-                    <span class="hero-fade-up eyebrow-tag inline-block text-indigo-300/90 mb-5" style="animation-delay:0s;">[ THE ALL-IN-ONE DENTAL OS ]</span>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-24">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <div class="min-w-0 text-center lg:text-left">
+                    <span class="hero-fade-up eyebrow-tag inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-indigo-100 mb-6" style="animation-delay:0s;">[ THE ALL-IN-ONE DENTAL OS ]</span>
 
                     <h1 class="hero-fade-up text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-white leading-[1.08]" style="animation-delay:0.08s;">
                         Run your clinic
@@ -126,41 +126,46 @@
                             Explore Features <i class="fa-solid fa-arrow-right text-sm"></i>
                         </a>
                     </div>
+
+                    <div class="hero-fade-up mt-10 flex items-center justify-center lg:justify-start gap-6 text-white/50 text-sm" style="animation-delay:0.36s;">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> No setup cost</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> Live in 24 hours</span>
+                    </div>
                 </div>
 
                 <!-- Product preview mockup -->
-                <div class="hero-fade-up relative" style="animation-delay:0.42s;">
+                <div class="hero-fade-up relative min-w-0 w-full max-w-md mx-auto lg:mx-0 lg:ml-auto" style="animation-delay:0.42s;">
                     <div class="absolute inset-0 -z-10 blur-3xl opacity-30"
                         style="background: radial-gradient(ellipse at center, #465fff, transparent 70%);"></div>
 
                     <div class="banner-mock text-left">
-                        <div class="flex items-center gap-1.5 px-4 py-3 border-b border-gray-100 bg-gray-50">
+                        <div class="flex items-center gap-1.5 px-4 py-2.5 border-b border-gray-100 bg-gray-50">
                             <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                            <span class="ml-3 text-xs text-gray-400">app.dentasaas.in/dashboard</span>
+                            <span class="ml-3 text-[11px] text-gray-400 truncate">app.dentasaas.in/dashboard</span>
                         </div>
 
-                        <div class="p-4 sm:p-6">
-                            <div class="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                        <div class="p-4">
+                            <div class="grid grid-cols-2 gap-3 mb-4">
                                 @foreach ([['icon' => 'fa-users', 'label' => 'Total Patients', 'value' => '248'], ['icon' => 'fa-calendar-check', 'label' => "Today's Appointments", 'value' => '12'], ['icon' => 'fa-indian-rupee-sign', 'label' => 'Monthly Revenue', 'value' => '₹86,400'], ['icon' => 'fa-hourglass-half', 'label' => 'Pending', 'value' => '3']] as $card)
-                                    <div class="rounded-xl border border-gray-100 p-3 sm:p-4">
+                                    <div class="rounded-xl border border-gray-100 p-3 min-w-0">
                                         <span
-                                            class="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-600 text-xs sm:text-sm">
+                                            class="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-600 text-xs">
                                             <i class="fa-solid {{ $card['icon'] }}"></i>
                                         </span>
-                                        <p class="mt-2 sm:mt-3 text-base sm:text-lg font-bold text-gray-900">
+                                        <p class="mt-2 text-base font-bold text-gray-900 truncate">
                                             {{ $card['value'] }}</p>
-                                        <p class="text-[11px] sm:text-xs text-gray-500">{{ $card['label'] }}</p>
+                                        <p class="text-[11px] text-gray-500 truncate">{{ $card['label'] }}</p>
                                     </div>
                                 @endforeach
                             </div>
 
-                            <div class="rounded-xl border border-gray-100 p-4">
-                                <p class="text-xs font-medium text-gray-500 mb-3">Revenue — Last 6 Months</p>
-                                <div class="flex items-end gap-3 h-20 sm:h-24">
+                            <div class="rounded-xl border border-gray-100 p-3">
+                                <p class="text-[11px] font-medium text-gray-500 mb-2">Revenue — Last 6 Months</p>
+                                <div class="flex items-end gap-2 h-14">
                                     @foreach ([40, 55, 35, 70, 60, 90] as $h)
-                                        <div class="flex-1 rounded-t"
+                                        <div class="flex-1 rounded-t min-w-0"
                                             style="height: {{ $h }}%; background-color:#465fff;">
                                         </div>
                                     @endforeach
