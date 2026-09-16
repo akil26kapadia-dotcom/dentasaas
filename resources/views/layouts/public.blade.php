@@ -146,7 +146,7 @@
                 <ul class="space-y-2 text-sm">
                     <li><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/918488055253" target="_blank"
                             rel="noopener" class="hover:text-white">+91 84880 55253</a></li>
-                    <li><i class="fa-solid fa-globe"></i> clinic.designflowstudio.space</li>
+                    <li><i class="fa-solid fa-globe"></i> {{ request()->getHost() }}</li>
                 </ul>
             </div>
         </div>
