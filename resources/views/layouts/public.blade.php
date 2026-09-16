@@ -106,8 +106,27 @@
         {{ $slot }}
     </main>
 
-    <footer style="background-color:#0b1e3d;" class="text-white/70">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <style>
+        @keyframes footerGlowDrift1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-40px, 25px) scale(1.15); }
+        }
+        @keyframes footerGlowDrift2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(35px, -20px) scale(1.1); }
+        }
+        .footer-glow { position: absolute; border-radius: 9999px; filter: blur(70px); pointer-events: none; }
+        .footer-glow-1 { top: -8rem; left: 8%; width: 22rem; height: 22rem; background: #465fff; opacity: 0.18; animation: footerGlowDrift1 20s ease-in-out infinite; }
+        .footer-glow-2 { bottom: -10rem; right: 10%; width: 26rem; height: 26rem; background: #7c9bff; opacity: 0.14; animation: footerGlowDrift2 24s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+            .footer-glow { animation: none !important; }
+        }
+    </style>
+    <footer style="background-color:#0b1e3d;" class="relative overflow-hidden text-white/70">
+        <div class="footer-glow footer-glow-1"></div>
+        <div class="footer-glow footer-glow-2"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
                 <div class="flex items-center gap-2 font-semibold text-lg text-white mb-3">
                     <i class="fa-solid fa-tooth" style="color:#4f6df5;"></i>
