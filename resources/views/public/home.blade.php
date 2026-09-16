@@ -21,26 +21,78 @@
     @endpush
 
     <!-- Hero -->
+    <style>
+        @keyframes heroDrift1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, 60px) scale(1.12); }
+            66% { transform: translate(-30px, 20px) scale(0.95); }
+        }
+        @keyframes heroDrift2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-60px, -40px) scale(1.15); }
+        }
+        @keyframes heroDrift3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(35px, -50px) scale(1.08); }
+        }
+        @keyframes toothFloat {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: var(--tooth-opacity, 0.14); }
+            90% { opacity: var(--tooth-opacity, 0.14); }
+            100% { transform: translateY(-140px) rotate(18deg); opacity: 0; }
+        }
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.65; }
+        }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-orb { position: absolute; border-radius: 9999px; filter: blur(64px); pointer-events: none; }
+        .hero-orb-1 { top: -6rem; right: -6rem; width: 24rem; height: 24rem; background: #465fff; opacity: 0.22; animation: heroDrift1 22s ease-in-out infinite; }
+        .hero-orb-2 { bottom: -8rem; left: -6rem; width: 20rem; height: 20rem; background: #7c9bff; opacity: 0.16; animation: heroDrift2 18s ease-in-out infinite; }
+        .hero-orb-3 { top: 30%; left: 50%; width: 16rem; height: 16rem; background: #22d3ee; opacity: 0.12; animation: heroDrift3 26s ease-in-out infinite; }
+        .hero-grid { animation: gridPulse 6s ease-in-out infinite; }
+        .hero-tooth { position: absolute; color: #ffffff; pointer-events: none; animation: toothFloat linear infinite; }
+        .hero-fade-up { opacity: 0; animation: heroFadeUp 0.7s ease-out forwards; }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-orb, .hero-grid, .hero-tooth { animation: none !important; }
+            .hero-fade-up { opacity: 1; animation: none !important; transform: none !important; }
+        }
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+    </style>
     <section class="relative overflow-hidden" style="background-color:#0b1e3d;">
-        <div class="absolute inset-0 opacity-40"
+        <div class="hero-grid absolute inset-0 opacity-40"
             style="background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 44px 44px;">
         </div>
-        <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full opacity-20 blur-3xl"
-            style="background-color:#465fff;"></div>
+
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-orb hero-orb-3"></div>
+
+        <i class="hero-tooth fa-solid fa-tooth" aria-hidden="true" style="left:8%; bottom:-2rem; font-size:1.75rem; --tooth-opacity:0.16; animation-duration:16s; animation-delay:0s;"></i>
+        <i class="hero-tooth fa-solid fa-tooth" aria-hidden="true" style="left:22%; bottom:-2rem; font-size:1rem; --tooth-opacity:0.12; animation-duration:12s; animation-delay:3s;"></i>
+        <i class="hero-tooth fa-solid fa-tooth" aria-hidden="true" style="right:14%; bottom:-2rem; font-size:2.25rem; --tooth-opacity:0.1; animation-duration:20s; animation-delay:6s;"></i>
+        <i class="hero-tooth fa-solid fa-tooth" aria-hidden="true" style="right:30%; bottom:-2rem; font-size:1.25rem; --tooth-opacity:0.14; animation-duration:14s; animation-delay:9s;"></i>
 
         <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24 text-center">
-            <h1 class="text-4xl sm:text-6xl font-extrabold text-white leading-tight">
+            <h1 class="hero-fade-up text-4xl sm:text-6xl font-extrabold text-white leading-tight" style="animation-delay:0.05s;">
                 Run Your Clinic
                 <em class="not-italic bg-clip-text text-transparent"
                     style="background-image: linear-gradient(90deg, #4f6df5, #7c9bff); font-style: italic;">Smarter</em>,
                 Not Harder
             </h1>
-            <p class="mt-6 text-lg text-white/70 max-w-2xl mx-auto">
+            <p class="hero-fade-up mt-6 text-lg text-white/70 max-w-2xl mx-auto" style="animation-delay:0.18s;">
                 All-in-one dental SaaS — appointments, patients, invoices, prescriptions and treatment plans, built for
                 modern clinics across India.
             </p>
 
-            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div class="hero-fade-up mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" style="animation-delay:0.3s;">
                 <a href="{{ route('request-access') }}"
                     class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white w-full sm:w-auto"
                     style="background-color:#465fff;">
@@ -53,7 +105,7 @@
             </div>
 
             <!-- Product preview mockup -->
-            <div class="relative mt-16 max-w-4xl mx-auto">
+            <div class="hero-fade-up relative mt-16 max-w-4xl mx-auto" style="animation-delay:0.42s;">
                 <div class="absolute inset-0 -z-10 blur-3xl opacity-30"
                     style="background: radial-gradient(ellipse at center, #465fff, transparent 70%);"></div>
 
@@ -111,7 +163,7 @@
 
     <!-- Stats -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        <div class="reveal grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             @foreach ([['value' => '2,500+', 'label' => 'Patients Managed'], ['value' => '₹0', 'label' => 'Setup Cost'], ['value' => '24hr', 'label' => 'Account Setup'], ['value' => '100%', 'label' => 'Data Isolated']] as $stat)
                 <div>
                     <p class="text-3xl sm:text-4xl font-bold" style="color:#465fff;">{{ $stat['value'] }}</p>
@@ -129,7 +181,7 @@
                 <p class="text-gray-500 mt-3">One platform for the whole front desk to back office.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ([
         ['icon' => 'fa-calendar-check', 'title' => 'Smart Appointments', 'desc' => 'Book, confirm and remind patients over WhatsApp in one click.'],
         ['icon' => 'fa-users', 'title' => 'Patient Records', 'desc' => 'Complete history — appointments, invoices, prescriptions, plans.'],
@@ -164,7 +216,7 @@
                 <p class="text-gray-500 mt-3">Live in your clinic within a day.</p>
             </div>
 
-            <div class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div class="reveal relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                 <div class="hidden lg:block absolute top-6 left-0 right-0 h-0.5 bg-gray-200" style="margin: 0 12.5%;">
                 </div>
 
@@ -190,7 +242,7 @@
                 <p class="text-gray-500 mt-3">Start free. Upgrade whenever you're ready.</p>
             </div>
 
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="reveal grid grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ([['name' => 'Free', 'price' => '₹0', 'highlight' => false], ['name' => 'Basic', 'price' => '₹299', 'highlight' => false], ['name' => 'Premium', 'price' => '₹799', 'highlight' => true], ['name' => 'Deluxe', 'price' => '₹1499', 'highlight' => false]] as $plan)
                     <div class="rounded-xl border p-6 text-center bg-white {{ $plan['highlight'] ? 'border-2' : 'border-gray-100' }}"
                         @if ($plan['highlight']) style="border-color:#465fff;" @endif>
@@ -222,7 +274,7 @@
                 <h2 class="text-3xl font-bold text-gray-900">Trusted by dentists across India</h2>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-6">
                 @foreach ([['quote' => 'Reduced admin work by 70%.', 'name' => 'Dr. Arjun Mehta', 'place' => 'Ahmedabad'], ['quote' => 'Best investment for my clinic.', 'name' => 'Dr. Sneha Patel', 'place' => 'Surat'], ['quote' => 'Simple yet powerful.', 'name' => 'Dr. Rahul Kumar', 'place' => 'Vadodara']] as $t)
                     <div class="bg-gray-50 rounded-xl p-6">
                         <div class="text-amber-400 mb-3">
@@ -258,4 +310,23 @@
             </div>
         </div>
     </section>
+
+    @push('scripts')
+        <script>
+            if ('IntersectionObserver' in window) {
+                const revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            revealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+            } else {
+                document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+            }
+        </script>
+    @endpush
 </x-public-layout>
