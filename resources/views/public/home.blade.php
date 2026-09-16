@@ -65,11 +65,31 @@
         @media (prefers-reduced-motion: reduce) {
             .reveal { opacity: 1; transform: none; transition: none; }
         }
+        .eyebrow-tag { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 0.7rem; letter-spacing: 0.12em; }
+        .node-divider { position: relative; height: 1px; background: linear-gradient(90deg, transparent, rgba(70,95,255,0.25) 12%, rgba(70,95,255,0.25) 88%, transparent); }
+        .node-divider span { position: absolute; top: 50%; width: 9px; height: 9px; border-radius: 9999px; border: 1.5px solid #465fff; background: #fff; transform: translateY(-50%); }
+        .node-divider span:first-child { left: 6%; }
+        .node-divider span:last-child { right: 6%; }
+        .banner-panel { position: relative; overflow: hidden; }
+        .banner-mock { border-radius: 1rem; background: #fff; box-shadow: 0 20px 45px -20px rgba(15,23,42,0.25); overflow: hidden; }
     </style>
+
+    <!-- Hero -->
     <section class="relative overflow-hidden" style="background-color:#0b1e3d;">
         <div class="hero-grid absolute inset-0 opacity-40"
             style="background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 44px 44px;">
         </div>
+
+        <!-- Organic swoosh shape, Axle-inspired -->
+        <svg class="absolute top-0 right-0 w-[60%] max-w-3xl h-auto opacity-60 pointer-events-none" viewBox="0 0 800 700" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+                <linearGradient id="heroSwoosh" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#465fff" stop-opacity="0.5" />
+                    <stop offset="100%" stop-color="#7c9bff" stop-opacity="0.12" />
+                </linearGradient>
+            </defs>
+            <path d="M420,0 C560,90 480,230 630,300 C760,360 720,520 800,620 L800,0 Z" fill="url(#heroSwoosh)" />
+        </svg>
 
         <div class="hero-orb hero-orb-1"></div>
         <div class="hero-orb hero-orb-2"></div>
@@ -80,66 +100,71 @@
         <i class="hero-tooth fa-solid fa-tooth" aria-hidden="true" style="right:14%; bottom:-2rem; font-size:2.25rem; --tooth-opacity:0.1; animation-duration:20s; animation-delay:6s;"></i>
         <i class="hero-tooth fa-solid fa-tooth" aria-hidden="true" style="right:30%; bottom:-2rem; font-size:1.25rem; --tooth-opacity:0.14; animation-duration:14s; animation-delay:9s;"></i>
 
-        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24 text-center">
-            <h1 class="hero-fade-up text-4xl sm:text-6xl font-extrabold text-white leading-tight" style="animation-delay:0.05s;">
-                Run Your Clinic
-                <em class="not-italic bg-clip-text text-transparent"
-                    style="background-image: linear-gradient(90deg, #4f6df5, #7c9bff); font-style: italic;">Smarter</em>,
-                Not Harder
-            </h1>
-            <p class="hero-fade-up mt-6 text-lg text-white/70 max-w-2xl mx-auto" style="animation-delay:0.18s;">
-                All-in-one dental SaaS — appointments, patients, invoices, prescriptions and treatment plans, built for
-                modern clinics across India.
-            </p>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-24">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="text-center lg:text-left">
+                    <span class="hero-fade-up eyebrow-tag inline-block text-indigo-300/90 mb-5" style="animation-delay:0s;">[ THE ALL-IN-ONE DENTAL OS ]</span>
 
-            <div class="hero-fade-up mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" style="animation-delay:0.3s;">
-                <a href="{{ route('request-access') }}"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white w-full sm:w-auto"
-                    style="background-color:#465fff;">
-                    Request Free Access
-                </a>
-                <a href="#features"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white border border-white/30 hover:bg-white/10 w-full sm:w-auto">
-                    Explore Features <i class="fa-solid fa-arrow-right text-sm"></i>
-                </a>
-            </div>
+                    <h1 class="hero-fade-up text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-white leading-[1.08]" style="animation-delay:0.08s;">
+                        Run your clinic
+                        <span class="block bg-clip-text text-transparent"
+                            style="background-image: linear-gradient(90deg, #4f6df5, #7c9bff);">smarter, not harder.</span>
+                    </h1>
+                    <p class="hero-fade-up mt-6 text-lg text-white/70 max-w-xl mx-auto lg:mx-0" style="animation-delay:0.18s;">
+                        All-in-one dental SaaS — appointments, patients, invoices, prescriptions and treatment plans, built for
+                        modern clinics across India.
+                    </p>
 
-            <!-- Product preview mockup -->
-            <div class="hero-fade-up relative mt-16 max-w-4xl mx-auto" style="animation-delay:0.42s;">
-                <div class="absolute inset-0 -z-10 blur-3xl opacity-30"
-                    style="background: radial-gradient(ellipse at center, #465fff, transparent 70%);"></div>
-
-                <div class="rounded-2xl bg-white shadow-2xl overflow-hidden text-left">
-                    <div class="flex items-center gap-1.5 px-4 py-3 border-b border-gray-100 bg-gray-50">
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                        <span class="ml-3 text-xs text-gray-400">app.dentasaas.in/dashboard</span>
+                    <div class="hero-fade-up mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4" style="animation-delay:0.3s;">
+                        <a href="{{ route('request-access') }}"
+                            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white w-full sm:w-auto"
+                            style="background-color:#465fff;">
+                            Request Free Access
+                        </a>
+                        <a href="#features"
+                            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white border border-white/30 hover:bg-white/10 w-full sm:w-auto">
+                            Explore Features <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </a>
                     </div>
+                </div>
 
-                    <div class="p-4 sm:p-6">
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
-                            @foreach ([['icon' => 'fa-users', 'label' => 'Total Patients', 'value' => '248'], ['icon' => 'fa-calendar-check', 'label' => "Today's Appointments", 'value' => '12'], ['icon' => 'fa-indian-rupee-sign', 'label' => 'Monthly Revenue', 'value' => '₹86,400'], ['icon' => 'fa-hourglass-half', 'label' => 'Pending', 'value' => '3']] as $card)
-                                <div class="rounded-xl border border-gray-100 p-3 sm:p-4">
-                                    <span
-                                        class="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-600 text-xs sm:text-sm">
-                                        <i class="fa-solid {{ $card['icon'] }}"></i>
-                                    </span>
-                                    <p class="mt-2 sm:mt-3 text-base sm:text-lg font-bold text-gray-900">
-                                        {{ $card['value'] }}</p>
-                                    <p class="text-[11px] sm:text-xs text-gray-500">{{ $card['label'] }}</p>
-                                </div>
-                            @endforeach
+                <!-- Product preview mockup -->
+                <div class="hero-fade-up relative" style="animation-delay:0.42s;">
+                    <div class="absolute inset-0 -z-10 blur-3xl opacity-30"
+                        style="background: radial-gradient(ellipse at center, #465fff, transparent 70%);"></div>
+
+                    <div class="banner-mock text-left">
+                        <div class="flex items-center gap-1.5 px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+                            <span class="ml-3 text-xs text-gray-400">app.dentasaas.in/dashboard</span>
                         </div>
 
-                        <div class="rounded-xl border border-gray-100 p-4">
-                            <p class="text-xs font-medium text-gray-500 mb-3">Revenue — Last 6 Months</p>
-                            <div class="flex items-end gap-3 h-20 sm:h-24">
-                                @foreach ([40, 55, 35, 70, 60, 90] as $h)
-                                    <div class="flex-1 rounded-t"
-                                        style="height: {{ $h }}%; background-color:#465fff;">
+                        <div class="p-4 sm:p-6">
+                            <div class="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                                @foreach ([['icon' => 'fa-users', 'label' => 'Total Patients', 'value' => '248'], ['icon' => 'fa-calendar-check', 'label' => "Today's Appointments", 'value' => '12'], ['icon' => 'fa-indian-rupee-sign', 'label' => 'Monthly Revenue', 'value' => '₹86,400'], ['icon' => 'fa-hourglass-half', 'label' => 'Pending', 'value' => '3']] as $card)
+                                    <div class="rounded-xl border border-gray-100 p-3 sm:p-4">
+                                        <span
+                                            class="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-600 text-xs sm:text-sm">
+                                            <i class="fa-solid {{ $card['icon'] }}"></i>
+                                        </span>
+                                        <p class="mt-2 sm:mt-3 text-base sm:text-lg font-bold text-gray-900">
+                                            {{ $card['value'] }}</p>
+                                        <p class="text-[11px] sm:text-xs text-gray-500">{{ $card['label'] }}</p>
                                     </div>
                                 @endforeach
+                            </div>
+
+                            <div class="rounded-xl border border-gray-100 p-4">
+                                <p class="text-xs font-medium text-gray-500 mb-3">Revenue — Last 6 Months</p>
+                                <div class="flex items-end gap-3 h-20 sm:h-24">
+                                    @foreach ([40, 55, 35, 70, 60, 90] as $h)
+                                        <div class="flex-1 rounded-t"
+                                            style="height: {{ $h }}%; background-color:#465fff;">
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -147,6 +172,8 @@
             </div>
         </div>
     </section>
+
+    <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
 
     <!-- Trust bar -->
     <section class="bg-gray-50 border-b border-gray-100">
@@ -208,6 +235,91 @@
         </div>
     </section>
 
+    <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
+
+    <!-- Feature spotlights, Zentist-inspired pastel banners -->
+    <section class="banner-panel py-20" style="background: linear-gradient(135deg, #eef1ff 0%, #f7f9ff 100%);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="reveal grid lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <div class="banner-mock text-left max-w-md">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-700">Invoice #INV-2026-0148</span>
+                            <span class="text-[10px] font-semibold uppercase tracking-wide text-white px-2 py-0.5 rounded-full" style="background-color:#22c55e;">Paid</span>
+                        </div>
+                        <div class="p-4 space-y-2">
+                            @foreach ([['Root Canal — Molar', '₹4,500'], ['Consultation', '₹500'], ['Fluoride Treatment', '₹800']] as $line)
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-600">{{ $line[0] }}</span>
+                                    <span class="text-gray-900 font-medium">{{ $line[1] }}</span>
+                                </div>
+                            @endforeach
+                            <div class="pt-2 mt-2 border-t border-gray-100 flex items-center justify-between text-sm font-semibold">
+                                <span class="text-gray-900">Grand Total</span>
+                                <span style="color:#465fff;">₹5,800</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2 text-center lg:text-left">
+                    <span class="eyebrow-tag inline-block text-indigo-500 mb-4">[ BILLING ]</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">Invoicing that just works</h2>
+                    <p class="text-gray-600 mt-4 max-w-md mx-auto lg:mx-0">
+                        Build a GST-ready invoice from your service catalogue in seconds, mark it paid, and hand your
+                        patient a branded PDF — no spreadsheets, no accountant on speed dial.
+                    </p>
+                    <ul class="mt-6 space-y-2 text-sm text-gray-700 inline-block text-left">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Auto-numbered, GST-ready invoices</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> One-click branded PDF export</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Paid / unpaid tracking built in</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
+
+    <section class="banner-panel py-20" style="background: linear-gradient(135deg, #eafaf3 0%, #f6fdf9 100%);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="reveal grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <span class="eyebrow-tag inline-block text-emerald-600 mb-4">[ FOLLOW-UPS ]</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">Never miss a follow-up</h2>
+                    <p class="text-gray-600 mt-4 max-w-md mx-auto lg:mx-0">
+                        Automatic WhatsApp reminders confirm appointments and cut no-shows — patients get a nudge,
+                        your chairs stay full, and your front desk stops making reminder calls.
+                    </p>
+                    <ul class="mt-6 space-y-2 text-sm text-gray-700 inline-block text-left">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> WhatsApp confirmations &amp; reminders</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Fewer no-shows, fuller schedule</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Zero manual follow-up calls</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="banner-mock text-left max-w-md ml-auto">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-700">Tomorrow's Appointments</span>
+                        </div>
+                        <div class="p-4 space-y-3">
+                            @foreach ([['Riya Shah', '10:30 AM', 'fa-check', '#22c55e'], ['Karan Desai', '11:15 AM', 'fa-check', '#22c55e'], ['Meera Joshi', '2:00 PM', 'fa-clock', '#f59e0b']] as $appt)
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-700">{{ $appt[0] }}</span>
+                                    <span class="text-gray-400 text-xs">{{ $appt[1] }}</span>
+                                    <span class="flex h-6 w-6 items-center justify-center rounded-full text-white text-[10px]" style="background-color:{{ $appt[3] }};">
+                                        <i class="fa-solid {{ $appt[2] }}"></i>
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
+
     <!-- How it works -->
     <section id="how-it-works" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -233,6 +345,8 @@
             </div>
         </div>
     </section>
+
+    <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
 
     <!-- Pricing teaser -->
     <section class="bg-gray-50 py-20">
@@ -275,21 +389,30 @@
             </div>
 
             <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-6">
-                @foreach ([['quote' => 'Reduced admin work by 70%.', 'name' => 'Dr. Arjun Mehta', 'place' => 'Ahmedabad'], ['quote' => 'Best investment for my clinic.', 'name' => 'Dr. Sneha Patel', 'place' => 'Surat'], ['quote' => 'Simple yet powerful.', 'name' => 'Dr. Rahul Kumar', 'place' => 'Vadodara']] as $t)
-                    <div class="bg-gray-50 rounded-xl p-6">
-                        <div class="text-amber-400 mb-3">
+                @foreach ([['quote' => 'Reduced admin work by 70%.', 'name' => 'Dr. Arjun Mehta', 'place' => 'Ahmedabad', 'initials' => 'AM', 'bg' => '#465fff'], ['quote' => 'Best investment for my clinic.', 'name' => 'Dr. Sneha Patel', 'place' => 'Surat', 'initials' => 'SP', 'bg' => '#22c55e'], ['quote' => 'Simple yet powerful.', 'name' => 'Dr. Rahul Kumar', 'place' => 'Vadodara', 'initials' => 'RK', 'bg' => '#f59e0b']] as $t)
+                    <div class="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+                        <div class="text-amber-400 mb-3 text-xs">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
                                 class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
                                 class="fa-solid fa-star"></i>
                         </div>
                         <p class="text-gray-700 italic">&ldquo;{{ $t['quote'] }}&rdquo;</p>
-                        <p class="mt-4 text-sm font-medium text-gray-900">{{ $t['name'] }}</p>
-                        <p class="text-xs text-gray-400">{{ $t['place'] }}</p>
+                        <div class="flex items-center gap-3 mt-5">
+                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white text-xs font-semibold" style="background-color:{{ $t['bg'] }};">
+                                {{ $t['initials'] }}
+                            </span>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">{{ $t['name'] }}</p>
+                                <p class="text-xs text-gray-400">{{ $t['place'] }}</p>
+                            </div>
+                        </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
+
+    <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
 
     <!-- CTA -->
     <section class="py-20" style="background-color:#0b1e3d;">
