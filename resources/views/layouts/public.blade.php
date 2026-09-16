@@ -106,7 +106,7 @@
         {{ $slot }}
     </main>
 
-    <footer style="background-color:#0b1e3d;" class="text-white/70 mt-16">
+    <footer style="background-color:#0b1e3d;" class="text-white/70">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
                 <div class="flex items-center gap-2 font-semibold text-lg text-white mb-3">
