@@ -12,6 +12,20 @@
     color-scheme: dark;
 }
 
+/* Navy call-to-action buttons; lifted onto a raised surface in dark mode so they don't vanish. */
+.btn-navy {
+    background-color: #0b1e3d;
+}
+
+.dark .btn-navy {
+    background-color: #1d2939;
+    box-shadow: inset 0 0 0 1px #344054;
+}
+
+.dark .btn-navy:hover {
+    background-color: #263449;
+}
+
 /* Theme toggle: show the moon in light mode and the sun in dark mode. */
 .theme-icon-sun {
     display: none;

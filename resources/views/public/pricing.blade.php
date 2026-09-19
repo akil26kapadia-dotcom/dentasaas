@@ -129,8 +129,8 @@
 
                         <a href="https://wa.me/918488055253?text={{ urlencode($meta['whatsapp']) }}" target="_blank"
                             rel="noopener"
-                            class="mt-6 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-white"
-                            style="background-color: {{ $meta['highlight'] ? '#465fff' : '#0b1e3d' }};">
+                            class="{{ $meta['highlight'] ? '' : 'btn-navy' }} mt-6 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-white"
+                            @if ($meta['highlight']) style="background-color: #465fff;" @endif>
                             <i class="fa-brands fa-whatsapp"></i> Get Started
                         </a>
                     </div>

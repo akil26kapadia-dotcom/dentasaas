@@ -416,15 +416,14 @@
 
                             @if ($plan->key === 'free')
                                 <a href="{{ route('request-access') }}"
-                                    class="inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white"
-                                    style="background-color: #0b1e3d;">
+                                    class="btn-navy inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white">
                                     Start free
                                 </a>
                             @else
                                 <a href="https://wa.me/918488055253?text={{ urlencode('Hi, I am interested in DentaSaaS ' . strtoupper($plan->name) . ' plan ₹' . $plan->price_monthly . '/month. Please help me get started.') }}"
                                     target="_blank" rel="noopener"
-                                    class="inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white"
-                                    style="background-color: {{ $plan->is_highlighted ? '#465fff' : '#0b1e3d' }};">
+                                    class="{{ $plan->is_highlighted ? '' : 'btn-navy' }} inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+                                    @if ($plan->is_highlighted) style="background-color: #465fff;" @endif>
                                     <i class="fa-brands fa-whatsapp"></i> Choose {{ $plan->name }}
                                 </a>
                             @endif
