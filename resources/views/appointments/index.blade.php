@@ -184,6 +184,11 @@
                         }).on('change', function() {
                             self.onPatientChange(this.value);
                         });
+
+                        if (new URLSearchParams(window.location.search).get('new') === '1') {
+                            this.openCreate();
+                            history.replaceState(null, '', window.location.pathname);
+                        }
                     },
 
                     resetForm() {

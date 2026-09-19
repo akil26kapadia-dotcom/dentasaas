@@ -47,5 +47,12 @@
     "Unpaid": "Unpaid",
     "New": "New",
     "Yes": "Yes",
-    "No": "No"
+    "No": "No",
+    "More": "More",
+    "Quick add": "Quick add",
+    "New Appointment": "New Appointment",
+    "New Patient": "New Patient",
+    "New Invoice": "New Invoice",
+    "New Prescription": "New Prescription",
+    "Close": "Close"
 }

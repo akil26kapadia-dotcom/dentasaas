@@ -41,7 +41,7 @@
 </head>
 
 <body class="font-sans antialiased bg-gray-50">
-    <div class="flex h-screen flex-col overflow-hidden">
+    <div class="app-shell flex h-screen flex-col overflow-hidden">
         @if (session('impersonator_id'))
             <div
                 class="flex shrink-0 items-center justify-center gap-3 bg-amber-500 px-4 py-2 text-center text-sm font-medium text-white">
@@ -248,9 +248,94 @@
                     @endif
                     {{ $slot }}
                 </main>
+
+                <!-- Mobile tab bar -->
+                <nav class="app-tabbar" style="--tab-accent: {{ tenant()?->theme_color ?? '#465fff' }};"
+                    aria-label="{{ __('Menu') }}" x-data="{ quickOpen: false }" @keydown.escape.window="quickOpen = false">
+                    <a href="{{ route('dashboard') }}"
+                        class="app-tab {{ request()->routeIs('dashboard') ? 'is-active' : '' }}">
+                        <i class="fa-solid fa-gauge"></i><span>{{ __('Dashboard') }}</span>
+                    </a>
+                    <a href="{{ route('appointments.index') }}"
+                        class="app-tab {{ request()->routeIs('appointments.*') ? 'is-active' : '' }}">
+                        <i class="fa-solid fa-calendar-check"></i><span>{{ __('Appointments') }}</span>
+                    </a>
+                    <button type="button" class="app-tab app-tab-fab" @click="quickOpen = ! quickOpen; sidebarOpen = false"
+                        :aria-expanded="quickOpen" aria-label="{{ __('Quick add') }}">
+                        <span class="app-fab" :class="quickOpen ? 'is-open' : ''"><i class="fa-solid fa-plus"></i></span>
+                    </button>
+                    <a href="{{ route('patients.index') }}"
+                        class="app-tab {{ request()->routeIs('patients.*') ? 'is-active' : '' }}">
+                        <i class="fa-solid fa-users"></i><span>{{ __('Patients') }}</span>
+                    </a>
+                    <button type="button" class="app-tab" :class="sidebarOpen ? 'is-active' : ''"
+                        @click="sidebarOpen = ! sidebarOpen; quickOpen = false">
+                        <i class="fa-solid fa-bars-staggered"></i><span>{{ __('More') }}</span>
+                    </button>
+
+                    <div x-show="quickOpen" x-cloak class="app-sheet-backdrop" @click="quickOpen = false"
+                        x-transition.opacity></div>
+                    <div x-show="quickOpen" x-cloak class="app-sheet" role="dialog" aria-label="{{ __('Quick add') }}"
+                        x-transition:enter="app-sheet-anim" x-transition:enter-start="app-sheet-from"
+                        x-transition:enter-end="app-sheet-to" x-transition:leave="app-sheet-anim"
+                        x-transition:leave-start="app-sheet-to" x-transition:leave-end="app-sheet-from">
+                        <p class="app-sheet-title">{{ __('Quick add') }}</p>
+                        <div class="app-sheet-grid">
+                            <a href="{{ route('appointments.index', ['new' => 1]) }}" class="app-sheet-tile">
+                                <span style="background:#eef1ff;color:#465fff;"><i class="fa-solid fa-calendar-plus"></i></span>
+                                {{ __('New Appointment') }}
+                            </a>
+                            <a href="{{ route('patients.create') }}" class="app-sheet-tile">
+                                <span style="background:#e8f8ef;color:#16a34a;"><i class="fa-solid fa-user-plus"></i></span>
+                                {{ __('New Patient') }}
+                            </a>
+                            <a href="{{ route('invoices.create') }}" class="app-sheet-tile">
+                                <span style="background:#fff4e0;color:#d97706;"><i class="fa-solid fa-file-invoice"></i></span>
+                                {{ __('New Invoice') }}
+                            </a>
+                            <a href="{{ route('prescriptions.create') }}" class="app-sheet-tile">
+                                <span style="background:#fdecef;color:#e11d48;"><i class="fa-solid fa-prescription-bottle-medical"></i></span>
+                                {{ __('New Prescription') }}
+                            </a>
+                        </div>
+                    </div>
+                </nav>
             </div>
         </div>
     </div>
+
+    <style>
+        .app-shell { height: 100vh; height: 100dvh; }
+        .app-tabbar { position: relative; flex-shrink: 0; display: flex; align-items: flex-end; justify-content: space-around;
+            padding: 0.4rem 0.5rem calc(0.4rem + env(safe-area-inset-bottom)); background: #fff; border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -8px 24px -14px rgba(15, 23, 42, 0.25); }
+        .app-tab { position: relative; z-index: 36; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.4rem 0;
+            font-size: 0.68rem; font-weight: 500; color: #6b7280; background: none; border: 0; cursor: pointer; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+        .app-tab i { font-size: 1.15rem; }
+        .app-tab.is-active { color: var(--tab-accent, #465fff); }
+        .app-tab.is-active::before { content: ""; position: absolute; top: -0.4rem; width: 1.75rem; height: 3px; border-radius: 0 0 4px 4px; background: var(--tab-accent, #465fff); }
+        .app-tab-fab { margin-top: -1.7rem; }
+        .app-fab { display: flex; align-items: center; justify-content: center; width: 3.3rem; height: 3.3rem; border-radius: 9999px; color: #fff; font-size: 1.15rem;
+            background-color: var(--tab-accent, #465fff); background-image: linear-gradient(160deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 55%);
+            box-shadow: 0 10px 22px -6px rgba(15, 23, 42, 0.4), 0 0 0 4px #fff; }
+        .app-fab i { transition: transform 0.2s ease; }
+        .app-fab.is-open i { transform: rotate(45deg); }
+
+        .app-sheet-backdrop { position: fixed; inset: 0; z-index: 35; background: rgba(15, 23, 42, 0.4); }
+        .app-sheet { position: fixed; z-index: 37; left: 0; right: 0; margin-inline: auto; width: min(92vw, 22rem);
+            bottom: calc(5.6rem + env(safe-area-inset-bottom)); padding: 1rem; background: #fff; border-radius: 1.25rem; box-shadow: 0 24px 50px -12px rgba(15, 23, 42, 0.45); }
+        .app-sheet-anim { transition: transform 0.22s ease, opacity 0.22s ease; }
+        .app-sheet-from { transform: translateY(16px) scale(0.98); opacity: 0; }
+        .app-sheet-to { transform: none; opacity: 1; }
+        .app-sheet-title { margin: 0 0 0.75rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #9ca3af; }
+        .app-sheet-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+        .app-sheet-tile { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0.8rem 0.4rem; border-radius: 1rem; background: #f9fafb;
+            font-size: 0.75rem; font-weight: 500; color: #374151; text-align: center; text-decoration: none; }
+        .app-sheet-tile:active { background: #f3f4f6; }
+        .app-sheet-tile span { display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; font-size: 1rem; }
+
+        @media (min-width: 1024px) { .app-tabbar { display: none; } }
+    </style>
 
     <x-credentials-modal />
 
