@@ -19,28 +19,32 @@ const darkTheme = plugin(({ addBase }) => {
     const on = (selector, declarations) => {
         rules[`.dark ${selector}`] = declarations;
     };
+    // Match utilities by class token in an attribute selector. Using `.class` selectors here made
+    // Tailwind re-emit these rules for matching `dark:` variants with higher specificity, which
+    // clobbered the intended dark: colours (e.g. dark:text-gray-300 on the text input component).
+    const k = (name) => `[class~="${name}"]`;
 
     // Neutral backgrounds
     const bg = { white: c.surface, 'gray-25': c.surface, 'gray-50': c.page, 'gray-100': c.raised, 'gray-200': c.strong };
     const bgHover = { white: c.raised, 'gray-50': c.raised, 'gray-100': c.raised, 'gray-200': c.strong };
-    for (const [name, value] of Object.entries(bg)) on(`.bg-${name}`, { backgroundColor: value });
-    for (const [name, value] of Object.entries(bgHover)) on(`.hover\\:bg-${name}:hover`, { backgroundColor: value });
-    on('.bg-white\\/95', { backgroundColor: 'rgb(16 24 40 / 0.92)' });
-    on('.disabled\\:bg-gray-100:disabled', { backgroundColor: c.raised });
+    for (const [name, value] of Object.entries(bg)) on(k(`bg-${name}`), { backgroundColor: value });
+    for (const [name, value] of Object.entries(bgHover)) on(`${k(`hover:bg-${name}`)}:hover`, { backgroundColor: value });
+    on(k('bg-white/95'), { backgroundColor: 'rgb(16 24 40 / 0.92)' });
+    on(`${k('disabled:bg-gray-100')}:disabled`, { backgroundColor: c.raised });
 
     // Neutral text
     const text = { 'gray-900': c.text, 'gray-800': '#e4e7ec', 'gray-700': '#d0d5dd', 'gray-600': '#b4bcc9', 'gray-500': '#98a2b3', 'gray-400': '#7b879c', 'gray-300': '#475467' };
     const textHover = { 'gray-900': '#ffffff', 'gray-800': '#ffffff', 'gray-700': c.text, 'gray-600': '#e4e7ec', 'gray-500': '#d0d5dd' };
-    for (const [name, value] of Object.entries(text)) on(`.text-${name}`, { color: value });
-    for (const [name, value] of Object.entries(textHover)) on(`.hover\\:text-${name}:hover`, { color: value });
+    for (const [name, value] of Object.entries(text)) on(k(`text-${name}`), { color: value });
+    for (const [name, value] of Object.entries(textHover)) on(`${k(`hover:text-${name}`)}:hover`, { color: value });
 
     // Neutral borders and dividers
     const border = { 'gray-50': c.raised, 'gray-100': '#182233', 'gray-200': c.raised, 'gray-300': c.strong };
     for (const [name, value] of Object.entries(border)) {
-        on(`.border-${name}`, { borderColor: value });
-        on(`.divide-${name} > :not([hidden]) ~ :not([hidden])`, { borderColor: value });
+        on(k(`border-${name}`), { borderColor: value });
+        on(`${k(`divide-${name}`)} > :not([hidden]) ~ :not([hidden])`, { borderColor: value });
     }
-    on('.hover\\:border-gray-300:hover', { borderColor: '#475467' });
+    on(`${k('hover:border-gray-300')}:hover`, { borderColor: '#475467' });
 
     // Tinted backgrounds / text / borders. [rgb, lighter text, lightest text]
     const tints = {
@@ -59,18 +63,23 @@ const darkTheme = plugin(({ addBase }) => {
         'blue-light': ['11 165 236', '#36bffa', '#7cd4fd'],
     };
     for (const [name, [rgb, light, lighter]] of Object.entries(tints)) {
-        on(`.bg-${name}-50`, { backgroundColor: `rgb(${rgb} / 0.12)` });
-        on(`.bg-${name}-100`, { backgroundColor: `rgb(${rgb} / 0.18)` });
-        on(`.bg-${name}-200`, { backgroundColor: `rgb(${rgb} / 0.24)` });
-        for (const shade of [50, 100]) on(`.hover\\:bg-${name}-${shade}:hover`, { backgroundColor: `rgb(${rgb} / 0.2)` });
-        for (const shade of [100, 200, 300]) on(`.border-${name}-${shade}`, { borderColor: `rgb(${rgb} / 0.3)` });
-        for (const shade of [600, 700]) on(`.text-${name}-${shade}`, { color: light });
-        for (const shade of [800, 900]) on(`.text-${name}-${shade}`, { color: lighter });
-        for (const shade of [700, 800, 900]) on(`.hover\\:text-${name}-${shade}:hover`, { color: lighter });
+        on(k(`bg-${name}-50`), { backgroundColor: `rgb(${rgb} / 0.12)` });
+        on(k(`bg-${name}-100`), { backgroundColor: `rgb(${rgb} / 0.18)` });
+        on(k(`bg-${name}-200`), { backgroundColor: `rgb(${rgb} / 0.24)` });
+        for (const shade of [50, 100]) on(`${k(`hover:bg-${name}-${shade}`)}:hover`, { backgroundColor: `rgb(${rgb} / 0.2)` });
+        for (const shade of [100, 200, 300]) on(k(`border-${name}-${shade}`), { borderColor: `rgb(${rgb} / 0.3)` });
+        for (const shade of [600, 700]) on(k(`text-${name}-${shade}`), { color: light });
+        for (const shade of [800, 900]) on(k(`text-${name}-${shade}`), { color: lighter });
+        for (const shade of [700, 800, 900]) on(`${k(`hover:text-${name}-${shade}`)}:hover`, { color: lighter });
     }
-    on('.text-indigo-500', { color: '#8aa4ff' });
-    on('.bg-indigo-50\\/60', { backgroundColor: 'rgb(70 95 255 / 0.1)' });
-    on('.bg-indigo-50\\/50', { backgroundColor: 'rgb(70 95 255 / 0.1)' });
+    on(k('text-indigo-500'), { color: '#8aa4ff' });
+    on(k('bg-indigo-50/60'), { backgroundColor: 'rgb(70 95 255 / 0.1)' });
+    on(k('bg-indigo-50/50'), { backgroundColor: 'rgb(70 95 255 / 0.1)' });
+
+    // Floating panels (modals, dropdowns): a hairline edge so they separate from the dimmed page.
+    for (const shadow of ['shadow-xl', 'shadow-2xl', 'shadow-theme-lg', 'shadow-theme-xl']) {
+        on(k(shadow), { boxShadow: `0 0 0 1px ${c.strong}, 0 24px 48px -12px rgb(0 0 0 / 0.6)` });
+    }
 
     // Sidebar component classes (defined with @apply in app.css)
     on('.menu-item-active', { backgroundColor: 'rgb(70 95 255 / 0.16)', color: '#9cb9ff' });
