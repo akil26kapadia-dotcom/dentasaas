@@ -34,6 +34,8 @@ Route::post('/request-access', [AccessRequestController::class, 'store'])->name(
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
+    Route::patch('notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
+
     Route::resource('clinics', AdminClinicController::class);
     Route::patch('clinics/{clinic}/plan', [AdminClinicController::class, 'setPlan'])->name('clinics.plan');
     Route::patch('clinics/{clinic}/extend', [AdminClinicController::class, 'extendPlan'])->name('clinics.extend');

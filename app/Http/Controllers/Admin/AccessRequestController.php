@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AccessRequest;
 use App\Models\Clinic;
 use App\Models\User;
+use App\Notifications\NewAccessRequestNotification;
 use App\Services\CredentialMailer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -18,6 +19,10 @@ class AccessRequestController extends Controller
 
     public function index(): View
     {
+        request()->user()->unreadNotifications()
+            ->where('type', NewAccessRequestNotification::class)
+            ->update(['read_at' => now()]);
+
         $requests = AccessRequest::where('status', 'pending')->latest()->get();
 
         return view('admin.access-requests.index', compact('requests'));
