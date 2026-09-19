@@ -11,10 +11,10 @@
             "operatingSystem": "Web",
             "description": "All-in-one dental clinic management software for appointments, patients, invoices, prescriptions and treatment plans.",
             "offers": [
-                {"@@type": "Offer", "price": "0", "priceCurrency": "INR", "name": "Free"},
-                {"@@type": "Offer", "price": "299", "priceCurrency": "INR", "name": "Basic"},
-                {"@@type": "Offer", "price": "799", "priceCurrency": "INR", "name": "Premium"},
-                {"@@type": "Offer", "price": "1499", "priceCurrency": "INR", "name": "Deluxe"}
+@foreach ($plans as $plan)
+                {"@@type": "Offer", "price": "{{ $plan->price_monthly }}", "priceCurrency": "INR", "name": @json($plan->name)}@if (! $loop->last),@endif
+
+@endforeach
             ]
         }
         </script>
@@ -354,6 +354,15 @@
     <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
 
     <!-- Pricing teaser -->
+    @php
+        $planCount = $plans->count();
+        $teaserGrid = match (true) {
+            $planCount <= 1 => 'max-w-sm mx-auto grid-cols-1',
+            $planCount === 2 => 'max-w-2xl mx-auto grid-cols-1 sm:grid-cols-2',
+            $planCount === 3 => 'max-w-5xl mx-auto grid-cols-1 md:grid-cols-3',
+            default => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+        };
+    @endphp
     <section class="bg-gray-50 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-12">
@@ -361,26 +370,67 @@
                 <p class="text-gray-500 mt-3">Start free. Upgrade whenever you're ready.</p>
             </div>
 
-            <div class="reveal grid grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ([['name' => 'Free', 'price' => '₹0', 'highlight' => false], ['name' => 'Basic', 'price' => '₹299', 'highlight' => false], ['name' => 'Premium', 'price' => '₹799', 'highlight' => true], ['name' => 'Deluxe', 'price' => '₹1499', 'highlight' => false]] as $plan)
-                    <div class="rounded-xl border p-6 text-center bg-white {{ $plan['highlight'] ? 'border-2' : 'border-gray-100' }}"
-                        @if ($plan['highlight']) style="border-color:#465fff;" @endif>
-                        @if ($plan['highlight'])
-                            <span
-                                class="inline-block text-[10px] font-semibold uppercase tracking-wide text-white px-2 py-0.5 rounded-full mb-2"
-                                style="background-color:#465fff;">Most Popular</span>
-                        @endif
-                        <p class="font-semibold text-gray-900">{{ $plan['name'] }}</p>
-                        <p class="text-2xl font-bold mt-1" style="color:#465fff;">{{ $plan['price'] }}<span
-                                class="text-xs text-gray-400 font-normal">/mo</span></p>
-                    </div>
-                @endforeach
-            </div>
+            @if ($plans->isEmpty())
+                <p class="text-center text-gray-400">Pricing is being updated — chat with us on WhatsApp for the latest plans.</p>
+            @else
+                <div class="reveal grid {{ $teaserGrid }} gap-6 pt-3">
+                    @foreach ($plans as $plan)
+                        @php $limits = $plan->toLimitsArray(); @endphp
+                        <div class="relative flex flex-col rounded-2xl border bg-white p-6 {{ $plan->is_highlighted ? 'border-2 shadow-lg' : 'border-gray-100' }}"
+                            @if ($plan->is_highlighted) style="border-color:#465fff;" @endif>
+                            @if ($plan->is_highlighted)
+                                <span
+                                    class="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold uppercase tracking-wide text-white px-3 py-1 rounded-full"
+                                    style="background-color:#465fff;">Most Popular</span>
+                            @endif
+
+                            <p class="font-semibold text-gray-900 text-lg">{{ $plan->name }}</p>
+                            <p class="mt-2">
+                                <span class="text-3xl font-bold" style="color:#465fff;">₹{{ number_format($plan->price_monthly) }}</span>
+                                <span class="text-sm text-gray-400">/mo</span>
+                            </p>
+
+                            <ul class="mt-4 mb-6 flex-1 space-y-2 text-sm text-gray-600">
+                                <li><i class="fa-solid fa-check text-green-500 w-4"></i>
+                                    {{ $limits['patients'] === -1 ? 'Unlimited' : number_format($limits['patients']) }} patients</li>
+                                <li><i class="fa-solid fa-check text-green-500 w-4"></i>
+                                    {{ $limits['doctors'] === -1 ? 'Unlimited' : $limits['doctors'] }}
+                                    {{ $limits['doctors'] === 1 ? 'doctor' : 'doctors' }}</li>
+                                @if ($limits['pdf'])
+                                    <li><i class="fa-solid fa-check text-green-500 w-4"></i> PDF invoices</li>
+                                @endif
+                                @if ($limits['prescriptions'])
+                                    <li><i class="fa-solid fa-check text-green-500 w-4"></i> Prescriptions</li>
+                                @endif
+                                @if ($limits['analytics'])
+                                    <li><i class="fa-solid fa-check text-green-500 w-4"></i>
+                                        {{ is_string($limits['analytics']) ? ucfirst($limits['analytics']) . ' analytics' : 'Analytics' }}</li>
+                                @endif
+                            </ul>
+
+                            @if ($plan->key === 'free')
+                                <a href="{{ route('request-access') }}"
+                                    class="inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+                                    style="background-color: #0b1e3d;">
+                                    Start free
+                                </a>
+                            @else
+                                <a href="https://wa.me/918488055253?text={{ urlencode('Hi, I am interested in DentaSaaS ' . strtoupper($plan->name) . ' plan ₹' . $plan->price_monthly . '/month. Please help me get started.') }}"
+                                    target="_blank" rel="noopener"
+                                    class="inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+                                    style="background-color: {{ $plan->is_highlighted ? '#465fff' : '#0b1e3d' }};">
+                                    <i class="fa-brands fa-whatsapp"></i> Choose {{ $plan->name }}
+                                </a>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            @endif
 
             <div class="text-center mt-10">
                 <a href="{{ route('pricing') }}" class="inline-flex items-center gap-2 font-medium hover:underline"
                     style="color:#465fff;">
-                    See Full Pricing <i class="fa-solid fa-arrow-right"></i>
+                    Compare all plan features <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <x-public-layout>
     <x-slot name="title">Pricing</x-slot>
-    <x-slot name="metaDescription">Simple, transparent pricing for DentaSaaS — Free, Basic ₹299, Premium ₹799 and Deluxe
-        ₹1499 per month. Choose the plan that fits your clinic.</x-slot>
+    <x-slot name="metaDescription">Simple, transparent pricing for DentaSaaS — {{ \Illuminate\Support\Arr::join($plans->map(fn ($plan) => $plan->price_monthly > 0 ? $plan->name . ' ₹' . $plan->price_monthly : $plan->name)->all(), ', ', ' and ') }}
+        per month. Choose the plan that fits your clinic.</x-slot>
 
     @push('meta')
         <script type="application/ld+json">
@@ -62,7 +62,16 @@
 
         <!-- Plan cards -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @php
+                $planCount = $planMeta->count();
+                $planGrid = match (true) {
+                    $planCount <= 1 => 'max-w-sm mx-auto grid-cols-1',
+                    $planCount === 2 => 'max-w-3xl mx-auto grid-cols-1 sm:grid-cols-2',
+                    $planCount === 3 => 'max-w-5xl mx-auto grid-cols-1 md:grid-cols-3',
+                    default => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+                };
+            @endphp
+            <div class="grid {{ $planGrid }} gap-6">
                 @foreach ($planMeta as $key => $meta)
                     <div class="relative rounded-2xl border p-6 bg-white {{ $meta['highlight'] ? 'border-2 shadow-lg' : 'border-gray-100' }}"
                         @if ($meta['highlight']) style="border-color:#465fff;" @endif>
@@ -191,7 +200,7 @@
             <h2 class="text-2xl font-bold text-gray-900 text-center mb-10">Frequently Asked Questions</h2>
 
             <div class="space-y-3" x-data="{ open: null }">
-                @foreach ([['q' => 'Is there a free trial?', 'a' => 'The Free plan is a permanent free tier — no trial expiry, no credit card required.'], ['q' => 'Can I upgrade anytime?', 'a' => 'Yes, contact us on WhatsApp and we will upgrade your plan the same day.'], ['q' => 'Is my clinic data private?', 'a' => 'Yes, every clinic\'s data is fully isolated — no other clinic can ever see your records.'], ['q' => 'Do you provide training?', 'a' => 'Yes, we provide free onboarding and training over WhatsApp for every new clinic.'], ['q' => 'GST invoice support?', 'a' => 'Yes, all plans include GST-ready invoices with PDF export (Basic and above).'], ['q' => 'What payment methods do you accept?', 'a' => 'UPI, bank transfer, or simply message us on WhatsApp to arrange payment.']] as $index => $faq)
+                @foreach ([['q' => 'Is there a free trial?', 'a' => 'The Free plan is a permanent free tier — no trial expiry, no credit card required.'], ['q' => 'Can I upgrade anytime?', 'a' => 'Yes, contact us on WhatsApp and we will upgrade your plan the same day.'], ['q' => 'Is my clinic data private?', 'a' => 'Yes, every clinic\'s data is fully isolated — no other clinic can ever see your records.'], ['q' => 'Do you provide training?', 'a' => 'Yes, we provide free onboarding and training over WhatsApp for every new clinic.'], ['q' => 'GST invoice support?', 'a' => 'Yes, all plans include GST-ready invoices with PDF export (on paid plans).'], ['q' => 'What payment methods do you accept?', 'a' => 'UPI, bank transfer, or simply message us on WhatsApp to arrange payment.']] as $index => $faq)
                     <div class="border border-gray-100 rounded-lg overflow-hidden">
                         <button @click="open = open === {{ $index }} ? null : {{ $index }}"
                             class="w-full flex items-center justify-between px-5 py-4 text-left font-medium text-gray-800 hover:bg-gray-50">

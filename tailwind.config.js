@@ -3,6 +3,10 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    // The app is light-only; without this Tailwind follows the OS setting and the
+    // shared dark: input styles turn every field black on phones in dark mode.
+    darkMode: 'class',
+
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
