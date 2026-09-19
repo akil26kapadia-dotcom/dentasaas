@@ -149,7 +149,7 @@
         .footer-beam::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 9rem;
             background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(70,95,255,0.32), transparent 70%); }
 
-        .footer-tooth { position: absolute; bottom: -1.5rem; color: #fff; pointer-events: none; animation: footerToothRise linear infinite; }
+        .footer-tooth { position: absolute; bottom: 7rem; color: #fff; pointer-events: none; animation: footerToothRise linear infinite; }
 
         .footer-logo-icon { display: inline-flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border-radius: 0.65rem;
             background: linear-gradient(135deg, rgba(70,95,255,0.4), rgba(124,155,255,0.12));
