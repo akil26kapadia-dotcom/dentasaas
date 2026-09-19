@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.theme-init')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'DentaSaaS') }} - Login</title>
@@ -18,6 +19,7 @@
 </head>
 
 <body class="font-sans antialiased">
+    <div class="fixed right-4 top-4 z-50"><x-theme-toggle /></div>
     <div class="min-h-screen flex">
         <!-- Brand panel -->
         <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col justify-between p-12"

@@ -8,6 +8,23 @@
     color-scheme: light;
 }
 
+:root.dark {
+    color-scheme: dark;
+}
+
+/* Theme toggle: show the moon in light mode and the sun in dark mode. */
+.theme-icon-sun {
+    display: none;
+}
+
+.dark .theme-icon-sun {
+    display: block;
+}
+
+.dark .theme-icon-moon {
+    display: none;
+}
+
 [x-cloak] {
     display: none !important;
 }

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.theme-init')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>
@@ -61,6 +62,7 @@
             </div>
 
             <div class="hidden md:flex items-center gap-3">
+                <x-theme-toggle />
                 @auth
                     <a href="{{ Auth::user()->role === 'superadmin' ? route('admin.dashboard') : route('dashboard') }}"
                         class="text-sm font-medium px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
@@ -78,9 +80,12 @@
                 @endauth
             </div>
 
-            <button @click="mobileNav = ! mobileNav" class="md:hidden text-gray-700">
-                <i class="fa-solid fa-bars text-xl"></i>
-            </button>
+            <div class="flex items-center gap-3 md:hidden">
+                <x-theme-toggle />
+                <button @click="mobileNav = ! mobileNav" class="text-gray-700" aria-label="Menu">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
         </div>
 
         <div x-show="mobileNav" x-cloak x-transition class="md:hidden bg-white border-t border-gray-100 shadow-lg">

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.theme-init')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'DentaSaaS') }}</title>
@@ -19,6 +20,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
+    <div class="fixed right-4 top-4 z-50"><x-theme-toggle /></div>
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl text-white text-3xl"
             style="background-color:#465fff;">

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.theme-init')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'DentaSaaS') }} - Super Admin</title>
@@ -17,6 +18,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    @include('partials.chart-theme')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
@@ -71,6 +73,7 @@
                 </button>
 
                 <div class="ml-auto flex items-center gap-3">
+                <x-theme-toggle />
                 <div class="relative" x-data="{ open: false }">
                     <button @click="open = ! open" aria-label="Notifications"
                         class="relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700">

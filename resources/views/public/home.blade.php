@@ -72,6 +72,12 @@
         .node-divider span:last-child { right: 6%; }
         .banner-panel { position: relative; overflow: hidden; }
         .banner-mock { border-radius: 1rem; background: #fff; box-shadow: 0 20px 45px -20px rgba(15,23,42,0.25); overflow: hidden; }
+        .banner-lavender { background: linear-gradient(135deg, #eef1ff 0%, #f7f9ff 100%); }
+        .banner-mint { background: linear-gradient(135deg, #eafaf3 0%, #f6fdf9 100%); }
+        .dark .banner-lavender { background: linear-gradient(135deg, #141b36 0%, #0d1424 100%); }
+        .dark .banner-mint { background: linear-gradient(135deg, #0e2721 0%, #0b1819 100%); }
+        .dark .banner-mock { background: #101828; box-shadow: 0 20px 45px -20px rgba(0,0,0,0.65); }
+        .dark .node-divider span { background: #0c111d; }
     </style>
 
     <!-- Hero -->
@@ -243,7 +249,7 @@
     <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
 
     <!-- Feature spotlights, Zentist-inspired pastel banners -->
-    <section class="banner-panel py-20" style="background: linear-gradient(135deg, #eef1ff 0%, #f7f9ff 100%);">
+    <section class="banner-panel banner-lavender py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="reveal grid lg:grid-cols-2 gap-12 items-center">
                 <div class="order-2 lg:order-1">
@@ -285,7 +291,7 @@
 
     <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
 
-    <section class="banner-panel py-20" style="background: linear-gradient(135deg, #eafaf3 0%, #f6fdf9 100%);">
+    <section class="banner-panel banner-mint py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="reveal grid lg:grid-cols-2 gap-12 items-center">
                 <div class="text-center lg:text-left">

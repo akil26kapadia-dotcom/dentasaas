@@ -34,5 +34,18 @@
     .app-tab .tab-badge { position: absolute; top: 0.1rem; left: calc(50% + 0.35rem); min-width: 1.05rem; height: 1.05rem; padding: 0 0.3rem; display: flex; align-items: center;
         justify-content: center; border-radius: 9999px; background: #f97316; color: #fff; font-size: 0.62rem; font-weight: 700; line-height: 1; box-shadow: 0 0 0 2px #fff; }
 
+    .dark .app-tabbar { background: #101828; border-top-color: #1d2939; box-shadow: 0 -8px 24px -14px rgba(0, 0, 0, 0.6); }
+    .dark .app-tab { color: #98a2b3; }
+    .dark .app-tab.is-active { color: #9cb9ff; color: color-mix(in srgb, var(--tab-accent, #465fff) 55%, white); }
+    .dark .app-tab.is-active::before { background: #9cb9ff; background: color-mix(in srgb, var(--tab-accent, #465fff) 55%, white); }
+    .dark .app-tab .tab-badge { box-shadow: 0 0 0 2px #101828; }
+    .dark .app-fab { box-shadow: 0 10px 22px -6px rgba(0, 0, 0, 0.6), 0 0 0 4px #101828; }
+    .dark .app-sheet-backdrop { background: rgba(0, 0, 0, 0.6); }
+    .dark .app-sheet { background: #101828; border: 1px solid #1d2939; box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.7); }
+    .dark .app-sheet-title { color: #7b879c; }
+    .dark .app-sheet-tile { background: #0c111d; color: #e4e7ec; }
+    .dark .app-sheet-tile:active { background: #1d2939; }
+    .dark .app-sheet-tile span { background: rgba(255, 255, 255, 0.08) !important; }
+
     @media (min-width: 1024px) { .app-tabbar { display: none; } }
 </style>

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.theme-init')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @php
@@ -35,6 +36,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    @include('partials.chart-theme')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
@@ -126,6 +128,8 @@
                                     @endforeach
                                 </div>
                             @endif
+
+                            <x-theme-toggle />
 
                             <!-- Notification bell -->
                             @php
