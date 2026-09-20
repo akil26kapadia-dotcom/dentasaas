@@ -10,7 +10,10 @@
 
     @php
         $siteName = config('app.name', 'DentaSaaS');
-        $pageTitle = isset($title) ? \Illuminate\Support\Str::squish((string) $title).' - '.$siteName : $siteName.' - Dental Clinic Management Software for India';
+        $cleanTitle = isset($title) ? \Illuminate\Support\Str::squish((string) $title) : null;
+        $pageTitle = $cleanTitle
+            ? (str_contains($cleanTitle, $siteName) ? $cleanTitle : $cleanTitle.' - '.$siteName)
+            : $siteName.' - Dental Clinic Management Software for India';
         $pageDescription = \Illuminate\Support\Str::squish((string) ($metaDescription ?? 'DentaSaaS is dental clinic management software for India: appointments, patient records, GST-ready invoices, prescriptions and treatment plans in one place. Start free.'));
         $canonicalUrl = \App\Support\Seo::canonical();
         $robotsContent = isset($robots) ? (string) $robots : (\App\Support\Seo::indexable() ? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' : 'noindex, nofollow');
