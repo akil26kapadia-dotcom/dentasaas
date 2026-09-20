@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Middleware\CanonicalHost;
 use App\Http\Middleware\EnsureClinicIsActive;
 use App\Http\Middleware\EnsurePlanLimit;
+use App\Http\Middleware\NoIndexPrivate;
+use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SuperAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,6 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'plan.limit' => EnsurePlanLimit::class,
             'superadmin' => SuperAdmin::class,
         ]);
+
+        $middleware->web(prepend: [CanonicalHost::class]);
+        $middleware->web(append: [SecurityHeaders::class, NoIndexPrivate::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

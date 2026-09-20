@@ -1,23 +1,25 @@
 <x-public-layout>
-    <x-slot name="title">Dental Clinic Management Software</x-slot>
+    <x-slot name="title">Dental Clinic Management Software for India</x-slot>
+    <x-slot name="metaDescription">DentaSaaS is dental clinic management software for India: appointments, patient records, GST-ready invoices, prescriptions and treatment plans in one place. Start free, no card needed.</x-slot>
 
     @push('meta')
-        <script type="application/ld+json">
-        {
-            "@@context": "https://schema.org",
-            "@@type": "SoftwareApplication",
-            "name": "DentaSaaS",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Web",
-            "description": "All-in-one dental clinic management software for appointments, patients, invoices, prescriptions and treatment plans.",
-            "offers": [
-@foreach ($plans as $plan)
-                {"@@type": "Offer", "price": "{{ $plan->price_monthly }}", "priceCurrency": "INR", "name": @json($plan->name)}@if (! $loop->last),@endif
-
-@endforeach
-            ]
-        }
-        </script>
+        {!! \App\Support\Seo::jsonLd([
+            '@type' => 'SoftwareApplication',
+            'name' => 'DentaSaaS',
+            'url' => \App\Support\Seo::url('/'),
+            'applicationCategory' => 'BusinessApplication',
+            'operatingSystem' => 'Web',
+            'inLanguage' => ['en-IN', 'hi-IN'],
+            'description' => 'Dental clinic management software for appointments, patient records, invoices, prescriptions and treatment plans.',
+            'featureList' => collect($featurePages)->pluck('name')->values()->all(),
+            'offers' => $plans->map(fn ($plan) => [
+                '@type' => 'Offer',
+                'name' => $plan->name,
+                'price' => (string) $plan->price_monthly,
+                'priceCurrency' => 'INR',
+                'url' => \App\Support\Seo::url('/pricing'),
+            ])->values()->all(),
+        ]) !!}
     @endpush
 
     <!-- Hero -->
@@ -117,8 +119,8 @@
                             style="background-image: linear-gradient(90deg, #4f6df5, #7c9bff);">smarter, not harder.</span>
                     </h1>
                     <p class="hero-fade-up mt-6 text-lg text-white/70 max-w-xl mx-auto lg:mx-0" style="animation-delay:0.18s;">
-                        All-in-one dental SaaS — appointments, patients, invoices, prescriptions and treatment plans, built for
-                        modern clinics across India.
+                        Dental clinic management software for India: appointments, patient records, invoices, prescriptions and
+                        treatment plans in one place.
                     </p>
 
                     <div class="hero-fade-up mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4" style="animation-delay:0.3s;">
@@ -127,7 +129,7 @@
                             style="background-color:#465fff;">
                             Request Free Access
                         </a>
-                        <a href="#features"
+                        <a href="{{ route('features') }}"
                             class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white border border-white/30 hover:bg-white/10 w-full sm:w-auto">
                             Explore Features <i class="fa-solid fa-arrow-right text-sm"></i>
                         </a>
@@ -135,7 +137,7 @@
 
                     <div class="hero-fade-up mt-10 flex items-center justify-center lg:justify-start gap-6 text-white/50 text-sm" style="animation-delay:0.36s;">
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> No setup cost</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> Live in 24 hours</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> Free plan, no expiry</span>
                     </div>
                 </div>
 
@@ -149,7 +151,7 @@
                             <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                            <span class="ml-3 text-[11px] text-gray-400 truncate">app.dentasaas.in/dashboard</span>
+                            <span class="ml-3 text-[11px] text-gray-400 truncate">dentasaas.in/dashboard</span>
                         </div>
 
                         <div class="p-4">
@@ -190,19 +192,19 @@
     <section class="bg-gray-50 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-gray-500">
-                <span><i class="fa-solid fa-lock"></i> bcrypt Passwords</span>
-                <span><i class="fa-solid fa-hospital"></i> Data Isolated</span>
-                <span><i class="fa-solid fa-mobile-screen"></i> Mobile-First</span>
-                <span><i class="fa-solid fa-language"></i> EN + हिंदी</span>
-                <span><i class="fa-solid fa-receipt"></i> GST Invoices</span>
+                <span><i class="fa-solid fa-lock"></i> Hashed passwords</span>
+                <span><i class="fa-solid fa-hospital"></i> Each clinic's data kept separate</span>
+                <span><i class="fa-solid fa-mobile-screen"></i> Works on phone and desktop</span>
+                <span><i class="fa-solid fa-language"></i> English + हिंदी</span>
+                <span><i class="fa-solid fa-receipt"></i> GST-ready invoices</span>
             </div>
         </div>
     </section>
 
-    <!-- Stats -->
+    <!-- Why -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="reveal grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            @foreach ([['value' => '2,500+', 'label' => 'Patients Managed'], ['value' => '₹0', 'label' => 'Setup Cost'], ['value' => '24hr', 'label' => 'Account Setup'], ['value' => '100%', 'label' => 'Data Isolated']] as $stat)
+            @foreach ([['value' => '₹0', 'label' => 'To start, on the free plan'], ['value' => '1 min', 'label' => 'To request access'], ['value' => 'EN + हिंदी', 'label' => 'Switch language any time'], ['value' => '0', 'label' => 'Software to install']] as $stat)
                 <div>
                     <p class="text-3xl sm:text-4xl font-bold" style="color:#465fff;">{{ $stat['value'] }}</p>
                     <p class="text-sm text-gray-500 mt-1">{{ $stat['label'] }}</p>
@@ -220,28 +222,22 @@
             </div>
 
             <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach ([
-        ['icon' => 'fa-calendar-check', 'title' => 'Smart Appointments', 'desc' => 'Book, confirm and remind patients over WhatsApp in one click.'],
-        ['icon' => 'fa-users', 'title' => 'Patient Records', 'desc' => 'Complete history — appointments, invoices, prescriptions, plans.'],
-        ['icon' => 'fa-file-invoice', 'title' => 'GST Invoicing', 'desc' => 'Branded, GST-ready invoices with instant PDF export.'],
-        ['icon' => 'fa-tooth', 'title' => 'Services Catalogue', 'desc' => 'Price and manage every treatment your clinic offers.'],
-        ['icon' => 'fa-chart-line', 'title' => 'Revenue Analytics', 'desc' => 'Track revenue, appointment trends and top services.'],
-        ['icon' => 'fa-user-doctor', 'title' => 'Multi-Doctor', 'desc' => 'Add your whole team with role-based access.'],
-        ['icon' => 'fa-mobile-screen', 'title' => 'Mobile-First Design', 'desc' => 'Runs beautifully on the front-desk tablet or your phone.'],
-        ['icon' => 'fa-language', 'title' => 'English + Hindi', 'desc' => 'Switch the entire interface between English and हिंदी.'],
-        ['icon' => 'fa-shield-halved', 'title' => 'Enterprise Security', 'desc' => 'bcrypt password hashing and fully isolated clinic data.'],
-    ] as $feature)
-                    <div class="group rounded-2xl border border-gray-200 bg-white border-t-4 border-t-transparent p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
-                        style="--hover-color:#465fff;" onmouseover="this.style.borderTopColor='#465fff'"
-                        onmouseout="this.style.borderTopColor='transparent'">
-                        <span
-                            class="w-12 h-12 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-4">
+                @foreach ($featurePages as $slug => $feature)
+                    <a href="{{ route('features.show', $slug) }}" class="group rounded-2xl border border-gray-200 bg-white border-t-4 border-t-transparent p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
+                        onmouseover="this.style.borderTopColor='#465fff'" onmouseout="this.style.borderTopColor='transparent'">
+                        <span class="w-12 h-12 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-4">
                             <i class="fa-solid {{ $feature['icon'] }}"></i>
                         </span>
-                        <h3 class="font-semibold text-gray-900">{{ $feature['title'] }}</h3>
-                        <p class="text-sm text-gray-500 mt-2">{{ $feature['desc'] }}</p>
-                    </div>
+                        <h3 class="font-semibold text-gray-900">{{ $feature['name'] }}</h3>
+                        <p class="text-sm text-gray-500 mt-2">{{ $feature['summary'] }}</p>
+                    </a>
                 @endforeach
+            </div>
+
+            <div class="text-center mt-10">
+                <a href="{{ route('features') }}" class="inline-flex items-center gap-2 font-medium hover:underline" style="color:#465fff;">
+                    See all features <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -298,13 +294,13 @@
                     <span class="eyebrow-tag inline-block text-emerald-600 mb-4">[ FOLLOW-UPS ]</span>
                     <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">Never miss a follow-up</h2>
                     <p class="text-gray-600 mt-4 max-w-md mx-auto lg:mx-0">
-                        Automatic WhatsApp reminders confirm appointments and cut no-shows — patients get a nudge,
-                        your chairs stay full, and your front desk stops making reminder calls.
+                        Confirm appointments and remind patients with a ready-made WhatsApp message, sent in one tap from the
+                        appointment. Patients get a nudge, your chairs stay fuller, and your front desk spends less time on the phone.
                     </p>
                     <ul class="mt-6 space-y-2 text-sm text-gray-700 inline-block text-left">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> WhatsApp confirmations &amp; reminders</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Fewer no-shows, fuller schedule</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Zero manual follow-up calls</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> One-tap WhatsApp confirmations &amp; reminders</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Clear status: pending, confirmed, completed</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Fewer follow-up calls from the front desk</li>
                     </ul>
                 </div>
                 <div>
@@ -420,7 +416,7 @@
                                     Start free
                                 </a>
                             @else
-                                <a href="https://wa.me/918488055253?text={{ urlencode('Hi, I am interested in DentaSaaS ' . strtoupper($plan->name) . ' plan ₹' . $plan->price_monthly . '/month. Please help me get started.') }}"
+                                <a href="{{ \App\Support\Seo::whatsappUrl('Hi, I am interested in DentaSaaS ' . strtoupper($plan->name) . ' plan ₹' . $plan->price_monthly . '/month. Please help me get started.') }}"
                                     target="_blank" rel="noopener"
                                     class="{{ $plan->is_highlighted ? '' : 'btn-navy' }} inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white"
                                     @if ($plan->is_highlighted) style="background-color: #465fff;" @endif>
@@ -441,58 +437,35 @@
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <h2 class="text-3xl font-bold text-gray-900">Trusted by dentists across India</h2>
-            </div>
+    <!-- From the blog -->
+    @if ($latestPosts->isNotEmpty())
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">Guides for dental clinics</h2>
+                    <p class="text-gray-500 mt-3">Practical reading on appointments, records, billing and privacy.</p>
+                </div>
 
-            <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-6">
-                @foreach ([['quote' => 'Reduced admin work by 70%.', 'name' => 'Dr. Arjun Mehta', 'place' => 'Ahmedabad', 'initials' => 'AM', 'bg' => '#465fff'], ['quote' => 'Best investment for my clinic.', 'name' => 'Dr. Sneha Patel', 'place' => 'Surat', 'initials' => 'SP', 'bg' => '#22c55e'], ['quote' => 'Simple yet powerful.', 'name' => 'Dr. Rahul Kumar', 'place' => 'Vadodara', 'initials' => 'RK', 'bg' => '#f59e0b']] as $t)
-                    <div class="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-                        <div class="text-amber-400 mb-3 text-xs">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="text-gray-700 italic">&ldquo;{{ $t['quote'] }}&rdquo;</p>
-                        <div class="flex items-center gap-3 mt-5">
-                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white text-xs font-semibold" style="background-color:{{ $t['bg'] }};">
-                                {{ $t['initials'] }}
-                            </span>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">{{ $t['name'] }}</p>
-                                <p class="text-xs text-gray-400">{{ $t['place'] }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
+                <div class="reveal grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @foreach ($latestPosts as $post)
+                        <a href="{{ route('blog.show', $post['slug']) }}" class="group flex flex-col rounded-2xl border border-gray-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-lg">
+                            <span class="text-xs font-semibold uppercase tracking-wide text-indigo-500">{{ $post['category'] }}</span>
+                            <h3 class="mt-2 font-semibold text-gray-900 leading-snug group-hover:underline">{{ $post['title'] }}</h3>
+                            <p class="mt-3 text-sm text-gray-500 flex-1">{{ $post['excerpt'] }}</p>
+                        </a>
+                    @endforeach
+                </div>
 
-    <div class="node-divider max-w-7xl mx-auto"><span></span><span></span></div>
-
-    <!-- CTA -->
-    <section class="py-20" style="background-color:#0b1e3d;">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-white">Ready to Modernise Your Clinic?</h2>
-            <p class="text-white/70 mt-3">Join clinics already running smarter with DentaSaaS.</p>
-            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="{{ route('request-access') }}"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white w-full sm:w-auto"
-                    style="background-color:#465fff;">
-                    Request Free Access
-                </a>
-                <a href="https://wa.me/918488055253" target="_blank" rel="noopener"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white bg-green-500 hover:bg-green-600 w-full sm:w-auto">
-                    <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp <i
-                        class="fa-solid fa-arrow-right text-sm"></i>
-                </a>
+                <div class="text-center mt-10">
+                    <a href="{{ route('blog.index') }}" class="inline-flex items-center gap-2 font-medium hover:underline" style="color:#465fff;">
+                        Read the blog <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
+
+    @include('partials.cta-band', ['heading' => 'Ready to modernise your clinic?', 'text' => 'Start on the free plan. No credit card and no expiry.'])
 
     @push('scripts')
         <script>

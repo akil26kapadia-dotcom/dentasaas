@@ -19,7 +19,7 @@ test('home page renders with SEO tags and JSON-LD', function () {
     $response = $this->get('/');
 
     $response->assertOk();
-    $response->assertSee('Run Your Clinic');
+    $response->assertSee('smarter, not harder.');
     $response->assertSee('Request Free Access');
     $response->assertSee('og:title', false);
     $response->assertSee('SoftwareApplication');
@@ -34,16 +34,6 @@ test('pricing page renders all four plans with whatsapp ctas', function () {
     $response->assertSee('Most Popular');
     $response->assertSee(urlencode('Hi, I am interested in DentaSaaS PREMIUM plan ₹799/month. Please help me get started.'), false);
     $response->assertSee('BreadcrumbList');
-});
-
-test('sitemap and robots static files exist with expected content', function () {
-    // These are static files under public/, served directly by the web server
-    // (not through Laravel's router), so we verify them on disk rather than via HTTP.
-    expect(file_exists(public_path('sitemap.xml')))->toBeTrue();
-    expect(file_get_contents(public_path('sitemap.xml')))->toContain('/pricing');
-
-    expect(file_exists(public_path('robots.txt')))->toBeTrue();
-    expect(file_get_contents(public_path('robots.txt')))->toContain('Disallow: /admin');
 });
 
 test('logged in user sees a dashboard link in the public navbar', function () {

@@ -1,19 +1,29 @@
 <x-public-layout>
-    <x-slot name="title">Pricing</x-slot>
-    <x-slot name="metaDescription">Simple, transparent pricing for DentaSaaS — {{ \Illuminate\Support\Arr::join($plans->map(fn ($plan) => $plan->price_monthly > 0 ? $plan->name . ' ₹' . $plan->price_monthly : $plan->name)->all(), ', ', ' and ') }}
-        per month. Choose the plan that fits your clinic.</x-slot>
+    @php
+        $pricingFaqs = [
+            ['q' => 'Is there a free trial?', 'a' => 'The Free plan is a permanent free tier: no trial expiry and no credit card required.'],
+            ['q' => 'Can I upgrade anytime?', 'a' => 'Yes. Message us on WhatsApp and we will upgrade your plan as soon as payment is confirmed.'],
+            ['q' => 'Is my clinic data private?', 'a' => 'Every clinic\'s data is kept separate from every other clinic\'s, and only people you add to your clinic can open your records.'],
+            ['q' => 'Do you provide training?', 'a' => 'Yes. We help every new clinic get started over WhatsApp at no extra cost.'],
+            ['q' => 'Do invoices support GST?', 'a' => 'Invoices carry your clinic details and GSTIN and have a tax percentage field, so you can add GST if you charge it. PDF export is available on paid plans.'],
+            ['q' => 'What payment methods do you accept?', 'a' => 'UPI or bank transfer. Message us on WhatsApp to arrange payment; we do not charge automatically.'],
+            ['q' => 'Can I get a refund?', 'a' => 'Yes, within ' . (int) config('dentasaas.business.refund_days', 7) . ' days of your first paid period. See the refund policy for details.'],
+        ];
+        $priceList = $plans->map(fn ($plan) => $plan->price_monthly > 0 ? $plan->name . ' ₹' . $plan->price_monthly : $plan->name)->all();
+    @endphp
+    <x-slot name="title">Pricing: Free and Paid Dental Software Plans</x-slot>
+    <x-slot name="metaDescription">DentaSaaS pricing in rupees: {{ \Illuminate\Support\Arr::join($priceList, ', ', ' and ') }} per month. Start free, upgrade when your clinic grows.</x-slot>
 
     @push('meta')
-        <script type="application/ld+json">
-        {
-            "@@context": "https://schema.org",
-            "@@type": "BreadcrumbList",
-            "itemListElement": [
-                {"@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ route('home') }}"},
-                {"@@type": "ListItem", "position": 2, "name": "Pricing", "item": "{{ route('pricing') }}"}
-            ]
-        }
-        </script>
+        {!! \App\Support\Seo::breadcrumbs(['Pricing' => '/pricing']) !!}
+        {!! \App\Support\Seo::jsonLd([
+            '@type' => 'FAQPage',
+            'mainEntity' => collect($pricingFaqs)->map(fn ($faq) => [
+                '@type' => 'Question',
+                'name' => $faq['q'],
+                'acceptedAnswer' => ['@type' => 'Answer', 'text' => $faq['a']],
+            ])->all(),
+        ]) !!}
     @endpush
 
     @php
@@ -127,7 +137,7 @@
                             </li>
                         </ul>
 
-                        <a href="https://wa.me/918488055253?text={{ urlencode($meta['whatsapp']) }}" target="_blank"
+                        <a href="{{ \App\Support\Seo::whatsappUrl($meta['whatsapp']) }}" target="_blank"
                             rel="noopener"
                             class="{{ $meta['highlight'] ? '' : 'btn-navy' }} mt-6 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-white"
                             @if ($meta['highlight']) style="background-color: #465fff;" @endif>
@@ -200,7 +210,7 @@
             <h2 class="text-2xl font-bold text-gray-900 text-center mb-10">Frequently Asked Questions</h2>
 
             <div class="space-y-3" x-data="{ open: null }">
-                @foreach ([['q' => 'Is there a free trial?', 'a' => 'The Free plan is a permanent free tier — no trial expiry, no credit card required.'], ['q' => 'Can I upgrade anytime?', 'a' => 'Yes, contact us on WhatsApp and we will upgrade your plan the same day.'], ['q' => 'Is my clinic data private?', 'a' => 'Yes, every clinic\'s data is fully isolated — no other clinic can ever see your records.'], ['q' => 'Do you provide training?', 'a' => 'Yes, we provide free onboarding and training over WhatsApp for every new clinic.'], ['q' => 'GST invoice support?', 'a' => 'Yes, all plans include GST-ready invoices with PDF export (on paid plans).'], ['q' => 'What payment methods do you accept?', 'a' => 'UPI, bank transfer, or simply message us on WhatsApp to arrange payment.']] as $index => $faq)
+                @foreach ($pricingFaqs as $index => $faq)
                     <div class="border border-gray-100 rounded-lg overflow-hidden">
                         <button @click="open = open === {{ $index }} ? null : {{ $index }}"
                             class="w-full flex items-center justify-between px-5 py-4 text-left font-medium text-gray-800 hover:bg-gray-50">
@@ -224,7 +234,7 @@
     <section class="py-20 text-center" style="background-color:#0b1e3d;">
         <div class="max-w-2xl mx-auto px-4">
             <h2 class="text-3xl font-bold text-white">Start Managing Your Clinic Today</h2>
-            <a href="https://wa.me/918488055253?text={{ urlencode('Hi, I would like to know more about DentaSaaS.') }}"
+            <a href="{{ \App\Support\Seo::whatsappUrl('Hi, I would like to know more about DentaSaaS.') }}"
                 target="_blank" rel="noopener"
                 class="mt-8 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-white bg-green-500 hover:bg-green-600">
                 <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp <i class="fa-solid fa-arrow-right text-sm"></i>

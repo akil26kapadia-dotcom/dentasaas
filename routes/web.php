@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ImpersonationController as AdminImpersonationCont
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\InvoiceController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TreatmentPlanController;
 use App\Http\Controllers\TreatmentSessionController;
@@ -27,8 +29,20 @@ use Illuminate\Support\Facades\Route;
 // Public
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/pricing', [PublicController::class, 'pricing'])->name('pricing');
+Route::get('/features', [PublicController::class, 'features'])->name('features');
+Route::get('/features/{slug}', [PublicController::class, 'feature'])->where('slug', '[a-z0-9-]+')->name('features.show');
+Route::get('/faq', [PublicController::class, 'faq'])->name('faq');
+Route::get('/about', [PublicController::class, 'about'])->name('about');
+Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
+Route::get('/privacy-policy', [PublicController::class, 'privacy'])->name('privacy');
+Route::get('/terms', [PublicController::class, 'terms'])->name('terms');
+Route::get('/refund-policy', [PublicController::class, 'refund'])->name('refund');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('blog.show');
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 Route::get('/request-access', [AccessRequestController::class, 'create'])->name('request-access');
-Route::post('/request-access', [AccessRequestController::class, 'store'])->name('request-access.store');
+Route::post('/request-access', [AccessRequestController::class, 'store'])->middleware('throttle:6,1')->name('request-access.store');
 
 // Super admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->group(function () {

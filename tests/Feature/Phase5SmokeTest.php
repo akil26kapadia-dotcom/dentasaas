@@ -38,8 +38,8 @@ test('superadmin can access admin dashboard with full stats', function () {
     $response = $this->actingAs($admin)->get('/admin');
 
     $response->assertOk();
-    $response->assertSee('Total Clinics');
-    $response->assertSee('Recent Clinics');
+    $response->assertSee('Active clinics');
+    $response->assertSee('Recent clinics');
 });
 
 // ---------- Admin\ClinicController ----------

@@ -1,46 +1,105 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en-IN">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @include('partials.theme-init')
+    @include('partials.fonts')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>
-        {{ isset($title) ? $title . ' - ' . config('app.name', 'DentaSaaS') : config('app.name', 'DentaSaaS') . ' - Dental Clinic Management Software' }}
-    </title>
-    <meta name="description"
-        content="{{ $metaDescription ?? 'DentaSaaS — all-in-one dental clinic management software for appointments, patients, invoices, prescriptions and treatment plans.' }}">
-    <meta name="keywords"
-        content="{{ $metaKeywords ?? 'dental clinic software, dental practice management, clinic appointment software, dental SaaS India' }}">
-    <link rel="canonical" href="{{ url()->current() }}">
+    @php
+        $siteName = config('app.name', 'DentaSaaS');
+        $pageTitle = isset($title) ? \Illuminate\Support\Str::squish((string) $title).' - '.$siteName : $siteName.' - Dental Clinic Management Software for India';
+        $pageDescription = \Illuminate\Support\Str::squish((string) ($metaDescription ?? 'DentaSaaS is dental clinic management software for India: appointments, patient records, GST-ready invoices, prescriptions and treatment plans in one place. Start free.'));
+        $canonicalUrl = \App\Support\Seo::canonical();
+        $robotsContent = isset($robots) ? (string) $robots : (\App\Support\Seo::indexable() ? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' : 'noindex, nofollow');
+        $ogImageUrl = isset($ogImage) ? (string) $ogImage : \App\Support\Seo::ogImage();
+        $ogTypeValue = isset($ogType) ? (string) $ogType : 'website';
+    @endphp
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
+    <meta name="robots" content="{{ $robotsContent }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+    <link rel="alternate" hreflang="en-IN" href="{{ $canonicalUrl }}">
+    <link rel="alternate" hreflang="x-default" href="{{ $canonicalUrl }}">
+    <meta name="theme-color" content="#0b1e3d">
 
-    <meta property="og:title"
-        content="{{ isset($title) ? $title . ' - ' . config('app.name', 'DentaSaaS') : config('app.name', 'DentaSaaS') }}">
-    <meta property="og:description"
-        content="{{ $metaDescription ?? 'All-in-one dental clinic management software — appointments, patients, invoices, prescriptions and treatment plans.' }}">
-    <meta property="og:image" content="{{ $ogImage ?? asset('favicon.ico') }}">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:type" content="{{ $ogTypeValue }}">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:image" content="{{ $ogImageUrl }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ $siteName }} - dental clinic management software">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title"
-        content="{{ isset($title) ? $title . ' - ' . config('app.name', 'DentaSaaS') : config('app.name', 'DentaSaaS') }}">
-    <meta name="twitter:description"
-        content="{{ $metaDescription ?? 'All-in-one dental clinic management software for modern practices.' }}">
-    <meta name="twitter:image" content="{{ $ogImage ?? asset('favicon.ico') }}">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ $ogImageUrl }}">
+
+    @if (config('dentasaas.seo.google_site_verification'))
+        <meta name="google-site-verification" content="{{ config('dentasaas.seo.google_site_verification') }}">
+    @endif
+    @if (config('dentasaas.seo.bing_site_verification'))
+        <meta name="msvalidate.01" content="{{ config('dentasaas.seo.bing_site_verification') }}">
+    @endif
 
     @stack('meta')
+
+    {!! \App\Support\Seo::jsonLd([
+        '@graph' => [
+            array_filter([
+                '@type' => 'Organization',
+                '@id' => \App\Support\Seo::url('/#organization'),
+                'name' => $siteName,
+                'url' => \App\Support\Seo::url('/'),
+                'logo' => \App\Support\Seo::url('android-chrome-512x512.png'),
+                'description' => 'Dental clinic management software for clinics in India.',
+                'areaServed' => 'IN',
+                'email' => \App\Support\Seo::business('email'),
+                'contactPoint' => [array_filter([
+                    '@type' => 'ContactPoint',
+                    'contactType' => 'customer support',
+                    'telephone' => \App\Support\Seo::business('phone'),
+                    'email' => \App\Support\Seo::business('email'),
+                    'areaServed' => 'IN',
+                    'availableLanguage' => ['English', 'Hindi'],
+                ])],
+            ]),
+            [
+                '@type' => 'WebSite',
+                '@id' => \App\Support\Seo::url('/#website'),
+                'url' => \App\Support\Seo::url('/'),
+                'name' => $siteName,
+                'inLanguage' => 'en-IN',
+                'publisher' => ['@id' => \App\Support\Seo::url('/#organization')],
+            ],
+        ],
+    ]) !!}
 
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="alternate icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
 
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @if (config('dentasaas.seo.ga4_measurement_id') && \App\Support\Seo::indexable())
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('dentasaas.seo.ga4_measurement_id') }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', '{{ config('dentasaas.seo.ga4_measurement_id') }}', { anonymize_ip: true });
+        </script>
+    @endif
 </head>
 
 <body class="font-sans antialiased bg-white text-gray-900" x-data="{ scrolled: false, mobileNav: false }"
@@ -55,10 +114,11 @@
             </a>
 
             <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-                <a href="{{ route('home') }}#features" class="hover:text-indigo-500">Features</a>
-                <a href="{{ route('home') }}#how-it-works" class="hover:text-indigo-500">How It Works</a>
+                <a href="{{ route('features') }}" class="hover:text-indigo-500">Features</a>
                 <a href="{{ route('pricing') }}" class="hover:text-indigo-500">Pricing</a>
-                <a href="{{ route('home') }}#contact" class="hover:text-indigo-500">Contact</a>
+                <a href="{{ route('blog.index') }}" class="hover:text-indigo-500">Blog</a>
+                <a href="{{ route('faq') }}" class="hover:text-indigo-500">FAQ</a>
+                <a href="{{ route('contact') }}" class="hover:text-indigo-500">Contact</a>
             </div>
 
             <div class="hidden md:flex items-center gap-3">
@@ -90,10 +150,12 @@
 
         <div x-show="mobileNav" x-cloak x-transition class="md:hidden bg-white border-t border-gray-100 shadow-lg">
             <div class="px-4 py-4 space-y-3 text-sm font-medium text-gray-700">
-                <a href="{{ route('home') }}#features" class="block">Features</a>
-                <a href="{{ route('home') }}#how-it-works" class="block">How It Works</a>
+                <a href="{{ route('features') }}" class="block">Features</a>
                 <a href="{{ route('pricing') }}" class="block">Pricing</a>
-                <a href="{{ route('home') }}#contact" class="block">Contact</a>
+                <a href="{{ route('blog.index') }}" class="block">Blog</a>
+                <a href="{{ route('faq') }}" class="block">FAQ</a>
+                <a href="{{ route('about') }}" class="block">About</a>
+                <a href="{{ route('contact') }}" class="block">Contact</a>
                 <hr>
                 @auth
                     <a href="{{ Auth::user()->role === 'superadmin' ? route('admin.dashboard') : route('dashboard') }}"
@@ -223,53 +285,71 @@
         <i class="footer-tooth fa-solid fa-tooth" aria-hidden="true" style="left:48%; font-size:1rem; --ft-o:0.1; animation-duration:14s; animation-delay:5s;"></i>
         <i class="footer-tooth fa-solid fa-tooth" aria-hidden="true" style="right:8%; font-size:2rem; --ft-o:0.09; animation-duration:22s; animation-delay:9s;"></i>
 
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-16 grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 lg:gap-10">
-            <div class="col-span-2 lg:col-span-1">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-16 grid grid-cols-2 lg:grid-cols-6 gap-x-6 gap-y-10 lg:gap-10">
+            <div class="col-span-2">
                 <div class="flex items-center gap-3 font-semibold text-lg text-white mb-4">
                     <span class="footer-logo-icon"><i class="fa-solid fa-tooth" style="color:#9db3ff;"></i></span>
                     <span>{{ config('app.name', 'DentaSaaS') }}</span>
                 </div>
-                <p class="text-sm max-w-xs">All-in-one dental clinic management software built for modern practices across India.
+                <p class="text-sm max-w-xs">Dental clinic management software for India: appointments, patient records, GST-ready invoices, prescriptions and treatment plans in one place.
                 </p>
                 @guest
                     <a href="{{ route('request-access') }}" class="footer-cta">
                         Request Free Access <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
                 @endguest
+                <div class="mt-5 flex flex-wrap gap-3 text-sm">
+                    <a href="{{ \App\Support\Seo::whatsappUrl() }}" target="_blank" rel="noopener" class="footer-chip footer-chip-wa">
+                        <i class="fa-brands fa-whatsapp"></i> {{ \App\Support\Seo::business('phone') }}
+                    </a>
+                    @if (\App\Support\Seo::business('email'))
+                        <a href="mailto:{{ \App\Support\Seo::business('email') }}" class="footer-chip">
+                            <i class="fa-regular fa-envelope"></i> {{ \App\Support\Seo::business('email') }}
+                        </a>
+                    @endif
+                </div>
             </div>
 
             <div>
                 <h4 class="footer-heading">Product</h4>
                 <ul class="space-y-3 text-sm">
-                    <li><a href="{{ route('home') }}#features" class="footer-link">Features</a></li>
-                    <li><a href="{{ route('home') }}#how-it-works" class="footer-link">How It Works</a></li>
+                    <li><a href="{{ route('features') }}" class="footer-link">Features</a></li>
+                    <li><a href="{{ route('features.show', 'appointment-scheduling') }}" class="footer-link">Appointments</a></li>
+                    <li><a href="{{ route('features.show', 'dental-billing-invoicing') }}" class="footer-link">Billing &amp; invoices</a></li>
                     <li><a href="{{ route('pricing') }}" class="footer-link">Pricing</a></li>
                 </ul>
             </div>
 
             <div>
-                <h4 class="footer-heading">Support</h4>
+                <h4 class="footer-heading">Resources</h4>
                 <ul class="space-y-3 text-sm">
+                    <li><a href="{{ route('blog.index') }}" class="footer-link">Blog</a></li>
+                    <li><a href="{{ route('faq') }}" class="footer-link">FAQ</a></li>
+                    <li><a href="{{ route('home') }}#how-it-works" class="footer-link">How it works</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="footer-heading">Company</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="{{ route('about') }}" class="footer-link">About</a></li>
+                    <li><a href="{{ route('contact') }}" class="footer-link">Contact</a></li>
                     @auth
                         <li><a href="{{ Auth::user()->role === 'superadmin' ? route('admin.dashboard') : route('dashboard') }}"
                                 class="footer-link">Dashboard</a></li>
                     @else
-                        <li><a href="{{ route('request-access') }}" class="footer-link">Request Access</a></li>
-                        <li><a href="{{ route('login') }}" class="footer-link">Sign In</a></li>
+                        <li><a href="{{ route('login') }}" class="footer-link">Sign in</a></li>
                     @endauth
-                    <li><a href="https://wa.me/918488055253" target="_blank" rel="noopener"
-                            class="footer-link">WhatsApp Support</a></li>
                 </ul>
             </div>
 
-            <div id="contact" class="col-span-2 lg:col-span-1">
-                <h4 class="footer-heading">Contact</h4>
-                <div class="flex flex-wrap lg:flex-col lg:items-start gap-3 text-sm">
-                    <a href="https://wa.me/918488055253" target="_blank" rel="noopener" class="footer-chip footer-chip-wa">
-                        <i class="fa-brands fa-whatsapp"></i> +91 84880 55253
-                    </a>
-                    <span class="footer-chip"><i class="fa-solid fa-globe"></i> {{ request()->getHost() }}</span>
-                </div>
+            <div>
+                <h4 class="footer-heading">Legal</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="{{ route('privacy') }}" class="footer-link">Privacy Policy</a></li>
+                    <li><a href="{{ route('terms') }}" class="footer-link">Terms of Service</a></li>
+                    <li><a href="{{ route('refund') }}" class="footer-link">Refund Policy</a></li>
+                </ul>
             </div>
         </div>
 
@@ -295,7 +375,7 @@
         <a href="{{ route('home') }}" class="tab {{ request()->routeIs('home') ? 'is-active' : '' }}">
             <i class="fa-solid fa-house"></i><span>Home</span>
         </a>
-        <a href="{{ route('home') }}#features" class="tab">
+        <a href="{{ route('features') }}" class="tab {{ request()->routeIs('features*') ? 'is-active' : '' }}">
             <i class="fa-solid fa-grip"></i><span>Features</span>
         </a>
         <a href="https://wa.me/918488055253" target="_blank" rel="noopener" class="tab tab-center" aria-label="Chat on WhatsApp">

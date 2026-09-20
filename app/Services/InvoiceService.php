@@ -27,8 +27,11 @@ class InvoiceService
 
     public function generateInvoiceNo(Clinic $clinic): string
     {
-        $count = $clinic->invoices()->count() + 1;
+        // Highest existing number + 1 (not a row count), so deleting an invoice can't cause a duplicate.
+        $highest = $clinic->invoices()->pluck('invoice_no')
+            ->map(fn ($no) => (int) preg_replace('/\D/', '', (string) $no))
+            ->max() ?? 0;
 
-        return 'INV'.str_pad((string) $count, 3, '0', STR_PAD_LEFT);
+        return 'INV'.str_pad((string) ($highest + 1), 3, '0', STR_PAD_LEFT);
     }
 }
