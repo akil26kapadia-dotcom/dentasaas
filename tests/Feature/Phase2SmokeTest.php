@@ -61,6 +61,15 @@ test('patient can be created and is scoped to clinic', function () {
     $response->assertRedirect(route('patients.show', $patient));
 });
 
+test('patient without a phone number is rejected with a validation error, not a server error', function () {
+    $doctor = User::where('email', 'doctor@happysmile.com')->first();
+
+    $this->actingAs($doctor)->post('/patients', ['name' => 'No Phone Patient'])
+        ->assertSessionHasErrors('phone');
+
+    expect(Patient::where('name', 'No Phone Patient')->exists())->toBeFalse();
+});
+
 test('patient creation is blocked once plan limit is reached', function () {
     $clinic = Clinic::create([
         'name' => 'Limit Test Clinic',
@@ -83,6 +92,7 @@ test('patient creation is blocked once plan limit is reached', function () {
 
     $response = $this->actingAs($owner)->post('/patients', [
         'name' => 'One Too Many',
+        'phone' => '9000000000',
     ]);
 
     expect(Patient::where('clinic_id', $clinic->id)->count())->toBe(25);

@@ -4,10 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Something Went Wrong - {{ config('app.name', 'DentaSaaS') }}</title>
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <meta name="robots" content="noindex, nofollow">
+        @include('partials.theme-init')
+        @include('partials.fonts')
+        @if (file_exists(public_path('build/manifest.json')))
+            @vite(['resources/css/app.css'])
+        @endif
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-        <style>body { font-family: 'figtree', sans-serif; }</style>
     </head>
     <body class="antialiased bg-gray-50">
         <div class="min-h-screen flex flex-col items-center justify-center px-4">

@@ -186,3 +186,15 @@ test('every JSON-LD block on public pages is valid JSON with a schema.org contex
         expect($data)->toBeArray()->and($data['@context'] ?? null)->toBe('https://schema.org');
     }
 })->with(['/', '/pricing', '/faq', '/about', '/contact', '/features/patient-records', '/blog/dental-clinic-billing-gst-basics']);
+
+// ---------- Error pages ----------
+
+test('error pages load the site stylesheet and are not indexable', function () {
+    $this->get('/definitely-not-a-page')
+        ->assertNotFound()
+        ->assertSee('/build/assets/app-', false)
+        ->assertSee('noindex', false);
+
+    $html = view('errors.500')->render();
+    expect($html)->toContain('/build/assets/app-')->toContain('Something Went Wrong');
+});

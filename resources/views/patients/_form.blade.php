@@ -11,7 +11,7 @@
 
     <div>
         <x-input-label for="phone" value="Phone" />
-        <x-text-input id="phone" name="phone" class="block mt-1 w-full" :value="old('phone', $patient->phone)" />
+        <x-text-input id="phone" name="phone" type="tel" inputmode="tel" class="block mt-1 w-full" :value="old('phone', $patient->phone)" required />
         <x-input-error :messages="$errors->get('phone')" class="mt-2" />
     </div>
 
