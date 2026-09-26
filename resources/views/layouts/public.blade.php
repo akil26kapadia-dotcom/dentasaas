@@ -136,7 +136,7 @@
                         class="text-sm font-medium px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                         Sign In
                     </a>
-                    <a href="https://wa.me/918488055253" target="_blank" rel="noopener"
+                    <a href="https://wa.me/919960457501" target="_blank" rel="noopener"
                         class="inline-flex items-center gap-2 text-sm font-medium bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
                         <i class="fa-brands fa-whatsapp"></i> WhatsApp Us <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
@@ -165,7 +165,7 @@
                         class="block">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}" class="block">Sign In</a>
-                    <a href="https://wa.me/918488055253" target="_blank" rel="noopener"
+                    <a href="https://wa.me/919960457501" target="_blank" rel="noopener"
                         class="block text-green-600">WhatsApp Us</a>
                 @endauth
             </div>
@@ -368,7 +368,7 @@
     </footer>
 
     <!-- Floating WhatsApp button (desktop only; mobile uses the tab bar) -->
-    <a href="https://wa.me/918488055253" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"
+    <a href="https://wa.me/919960457501" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"
         class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-green-500 hover:bg-green-600 text-white hidden md:flex items-center justify-center shadow-lg text-2xl">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
@@ -381,7 +381,7 @@
         <a href="{{ route('features') }}" class="tab {{ request()->routeIs('features*') ? 'is-active' : '' }}">
             <i class="fa-solid fa-grip"></i><span>Features</span>
         </a>
-        <a href="https://wa.me/918488055253" target="_blank" rel="noopener" class="tab tab-center" aria-label="Chat on WhatsApp">
+        <a href="https://wa.me/919960457501" target="_blank" rel="noopener" class="tab tab-center" aria-label="Chat on WhatsApp">
             <span class="tab-fab"><i class="fa-brands fa-whatsapp"></i></span><span>Chat</span>
         </a>
         <a href="{{ route('pricing') }}" class="tab {{ request()->routeIs('pricing') ? 'is-active' : '' }}">

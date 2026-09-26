@@ -255,7 +255,7 @@
                 <tr>
                     <td style="padding: 8px 10px; font-size: 8pt; color: #065f46;">
                         <strong>Payment:</strong> Please complete payment at your earliest convenience. For queries,
-                        contact {{ $clinic->phone ?: '+91 8488055253' }}.
+                        contact {{ $clinic->phone ?: '+91 99604 57501' }}.
                     </td>
                 </tr>
             </table>

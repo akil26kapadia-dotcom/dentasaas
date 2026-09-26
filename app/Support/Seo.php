@@ -75,7 +75,7 @@ class Seo
 
     public static function whatsappUrl(?string $text = null): string
     {
-        $url = 'https://wa.me/'.self::business('whatsapp', '918488055253');
+        $url = 'https://wa.me/'.self::business('whatsapp', '919960457501');
 
         return $text ? $url.'?text='.urlencode($text) : $url;
     }

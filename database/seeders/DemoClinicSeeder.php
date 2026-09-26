@@ -24,7 +24,7 @@ class DemoClinicSeeder extends Seeder
                 'name' => 'Happy Smile',
                 'plan' => 'premium',
                 'status' => 'active',
-                'phone' => '+91 8488055253',
+                'phone' => '+91 99604 57501',
                 'email' => 'contact@happysmile.example',
             ]
         );

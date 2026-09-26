@@ -31,7 +31,7 @@
 
                             <p style="color:#374151;">
                                 Renew: <a href="https://clinic.designflowstudio.space" style="color:#465fff;">clinic.designflowstudio.space</a><br>
-                                Or WhatsApp us: <a href="https://wa.me/918488055253" style="color:#465fff;">+91 8488055253</a>
+                                Or WhatsApp us: <a href="https://wa.me/919960457501" style="color:#465fff;">+91 99604 57501</a>
                             </p>
                         </td>
                     </tr>

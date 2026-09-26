@@ -27,8 +27,8 @@ return [
         'name' => env('BUSINESS_NAME', 'DentaSaaS'),
         'legal_name' => env('BUSINESS_LEGAL_NAME'),
         'email' => env('BUSINESS_EMAIL'),
-        'phone' => env('BUSINESS_PHONE', '+91 84880 55253'),
-        'whatsapp' => env('BUSINESS_WHATSAPP', '918488055253'),
+        'phone' => env('BUSINESS_PHONE', '+91 99604 57501'),
+        'whatsapp' => env('BUSINESS_WHATSAPP', '919960457501'),
         'address' => env('BUSINESS_ADDRESS'),
         'grievance_officer' => env('BUSINESS_GRIEVANCE_OFFICER'),
         // How many days after a first paid period a refund can be requested (see /refund-policy).
